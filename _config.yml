@@ -22,13 +22,16 @@ title: Simone Persiani
 email: iosonopersia@gmail.com
 description: # >- # this means to ignore newlines until "baseurl:"
   Simone Persiani's personal web page. I'm an ICT enthusiast with a bachelor
-  in Computer Engineering and I'm now enrolled in Artificial Intelligence
+  in Computer Engineering, being now enrolled in the Artificial Intelligence
   master degree (University of Bologna, Italy). I'm also a 3D printing hobbyist
-  and open-source lover!
+  and a true open-source lover!
 baseurl: "" # the subpath of your site, e.g. /blog
 url: "" # the base hostname & protocol for your site, e.g. http://example.com
 # twitter_username: jekyllrb
 github_username:  iosonopersia
+header_pages:
+  - about.md
+  - portfolio.md
 
 # Build settings
 theme: minima
