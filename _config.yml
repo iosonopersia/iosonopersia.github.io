@@ -29,16 +29,17 @@ baseurl: "" # the subpath of your site, e.g. /blog
 url: "" # the base hostname & protocol for your site, e.g. http://example.com
 # twitter_username: jekyllrb
 github_username:  iosonopersia
-linkedin-username: simone-persiani-a52632171
+linkedin_username: simone-persiani-a52632171
 header_pages:
   - about.markdown
   - portfolio.markdown
-show_excerpts: true
+paginate: 1
 
 # Build settings
 theme: minima
 plugins:
   - jekyll-feed
+  - jekyll-paginator
 
 # Exclude from processing.
 # The following items will not be processed, by default.
