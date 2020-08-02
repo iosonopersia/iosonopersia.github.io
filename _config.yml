@@ -30,8 +30,8 @@ url: "" # the base hostname & protocol for your site, e.g. http://example.com
 # twitter_username: jekyllrb
 github_username:  iosonopersia
 header_pages:
-  - about.md
-  - portfolio.md
+  - about.markdown
+  - portfolio.markdown
 
 # Build settings
 theme: minima
