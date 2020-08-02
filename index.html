@@ -7,10 +7,9 @@ layout: default
 
 <!-- This loops through the paginated posts -->
 {% for post in paginator.posts %}
-  <h1><a href="{{ post.url }}">{{ post.title }}</a></h1>
+  <h1>{{ post.title }}</h1>
   <p class="author">
-      {{ post.author }}
-    <span class="date">{{ post.date }}</span>
+    <span class="post-meta date">{{ post.date | date: "%b %-d, %Y" }}</span>
   </p>
   <div class="content">
     {{ post.content }}
@@ -19,16 +18,16 @@ layout: default
 <hr>
 <br>
 <!-- Pagination links -->
-<div class="pagination" style="margin: 0 auto; width: 50%; text-align: center;">
+<div class="pagination" style="margin: 0 auto; width: 100%; text-align: center;">
   {% if paginator.previous_page %}
     <a href="{{ paginator.previous_page_path }}" class="previous" style="font-weight:bolder"><-- Previous</a>
   {% else %}
-    <span class="previous" style="font-style: italic"><-- Previous</span>
+    <span class="previous" style="font-style: italic">Previous</span>
   {% endif %}
-  <span class="page_number" style="margin-left: 30px; margin-right: 30px">{{ paginator.page }} of {{ paginator.total_pages }}</span>
+  <span class="page_number">{{ paginator.page }} of {{ paginator.total_pages }}</span>
   {% if paginator.next_page %}
-    <a href="{{ paginator.next_page_path }}" class="next" style="font-weight:bolder">Next --></a>
+    <a href="{{ paginator.next_page_path }}" class="next" style="font-weight:bolder">Next</a>
   {% else %}
-    <span class="next"  style="font-style: italic">Next --></span>
+    <span class="next" style="font-style: italic">Next</span>
   {% endif %}
 </div>
