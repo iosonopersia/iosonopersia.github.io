@@ -4,6 +4,22 @@
 
 layout: default
 ---
+<!-- Pagination links -->
+<div class="pagination" style="margin: 0 auto; width: 100%; text-align: center;">
+  {% if paginator.previous_page %}
+    <a href="{{ paginator.previous_page_path }}" class="previous" style="font-weight:bolder">Previous</a>
+  {% else %}
+    <span class="previous" style="font-style: italic">Previous</span>
+  {% endif %}
+  <span class="page_number">{{ paginator.page }} of {{ paginator.total_pages }}</span>
+  {% if paginator.next_page %}
+    <a href="{{ paginator.next_page_path }}" class="next" style="font-weight:bolder">Next</a>
+  {% else %}
+    <span class="next" style="font-style: italic">Next</span>
+  {% endif %}
+</div>
+<br />
+<hr />
 
 <!-- This loops through the paginated posts -->
 {% for post in paginator.posts %}
@@ -15,12 +31,13 @@ layout: default
     {{ post.content }}
   </div>
 {% endfor %}
-<hr>
-<br>
+<hr />
+<br />
+
 <!-- Pagination links -->
 <div class="pagination" style="margin: 0 auto; width: 100%; text-align: center;">
   {% if paginator.previous_page %}
-    <a href="{{ paginator.previous_page_path }}" class="previous" style="font-weight:bolder"><-- Previous</a>
+    <a href="{{ paginator.previous_page_path }}" class="previous" style="font-weight:bolder">Previous</a>
   {% else %}
     <span class="previous" style="font-style: italic">Previous</span>
   {% endif %}
