@@ -1,0 +1,55 @@
+---
+layout: post
+title:  "[OCWR] Week 1 - OpenCitations Weekly Report"
+date:   2020-08-07 16:36:00 +0200
+categories: blog ocwr
+---
+# Introduction
+This is the first weekly report related to my proceedings in the [OpenCitations][opencitations] post-degree [research scholarship][research_scholarship] I'm currently involved in. \\
+The research project, lead by professor [Silvio Peroni][essepuntato] from University of Bologna and funded by the [Wellcome Trust][wellcome], will take 5 months starting from August and ending on December 2020. \\
+Each week, starting from now, I'm going to publish a detailed report keeping track of every progress made since the previous one.
+
+# Report
+The first week was fully dedicated to the reading of many resources regarding the OpenCitations project and its outcomes. The goal was to achieve a better comprehension of the OC effort, what has already been done and what has not been done yet. This will be very useful in the next weeks when I'll be working with pre-existing OC technologies, as knowing in advance _what_ they were made for and _how_ they're supposed to work will surely provide me a smoother experience.
+
+## Articles
+During the week I read many scholar papers suggested by prof. Peroni. In particular, I studied the following articles:
+
+### General knowledge about the project
+* _Silvio Peroni, David Shotton (2020)._ [__OpenCitations, an infrastructure organization for open scholarship.__](https://doi.org/10.1162/qss_a_00023) _Quantitative Science Studies, 1(1): 428-444._
+* _Silvio Peroni, David Shotton, Fabio Vitali (2017)._ [__One year of the OpenCitations Corpus: Releasing RDF-based scholarly citation data into the Public Domain.__](https://doi.org/10.1007/978-3-319-68204-4_19) _In Proceedings of the 16th International Semantic Web Conference (ISWC 2017): 184-192., OpenAccess at_ [https://w3id.org/people/essepuntato/papers/oc-iswc2017.html](https://w3id.org/people/essepuntato/papers/oc-iswc2017.html)
+* _Marilena Daquino (2020)._ [__The Open Biomedical Citations in Context Corpus: Progress Report__](https://opencitations.wordpress.com/2020/01/27/the-open-biomedical-citations-in-context-corpus-progress-report/)
+
+### Data model
+* _Marilena Daquino, Silvio Peroni, David M. Shotton, Giovanni Colavizza, Behnam Ghavimi, Anne Lauscher, Philipp Mayr, Matteo Romanello, Philipp Zumstein (2020)._ [__The OpenCitations Data Model.__](https://arxiv.org/abs/2005.11981) 
+* _Marilena Daquino, Silvio Peroni, David Shotton (2020)._ [__The OpenCitations Data Model.__](https://doi.org/10.6084/m9.figshare.3443876) _Figshare._
+
+### Currently adopted provenance-tracking technique
+* _Silvio Peroni, David Shotton, Fabio Vitali (2016)._ [__A document-inspired way for tracking changes of RDF data - The case of the OpenCitations Corpus.__](https://w3id.org/oc/paper/occ-driftalod2016.html) _In Proceedings of 1st Workshop on Detection, Representation and Management of Concept Drift in Linked Open Data (Drift-a-LOD 2016): 26-33._
+
+### OpenCitations workflow (BEE, SPACIN, COCI, SPAR ...)
+* _Ivan Heibi, Silvio Peroni, David Shotton (2019)._ [__Software review: COCI, the OpenCitations Index of Crossref open DOI-to-DOI citations.__](https://doi.org/10.1007/s11192-019-03217-6) _Scientometrics, 121 (2): 1213-1228._
+* _Silvio Peroni, David Shotton (2018)._ [__The SPAR Ontologies.__](https://doi.org/10.1007/978-3-030-00668-6_8) _In Proceedings of the 17th International Semantic Web Conference (ISWC 2018): 119-136._
+* _Silvio Peroni, David Shotton, Fabio Vitali (2016)._ [__Freedom for bibliographic references: OpenCitations arise.__](https://w3id.org/oc/paper/occ-lisc2016.html) _In Proceedings of 2016 International Workshop on Linked Data for Information Extraction (LD4IE 2016): 32-43._
+* _Silvio Peroni, David Shotton, Fabio Vitali (2016)._ [__Building citation networks with SPACIN.__](https://w3id.org/oc/paper/spacin-demo-ekaw2016.html) _In Proceedings of the Poster and Demo track of the 20th International Conference on Knowledge Engineering and Knowledge Management (EKAW 2016)._
+
+### Definitions
+* _Silvio Peroni, David Shotton (2018)._ [__Open Citation: Definition.__](https://doi.org/10.6084/m9.figshare.6683855) _Figshare._
+* _Silvio Peroni, David Shotton (2019)._ [__Open Citation Identifier: Definition.__](https://doi.org/10.6084/m9.figshare.7127816) _Figshare._
+
+## Videos
+I watched the following YouTube videos, which I found to be useful:
+* _John Chodacki (2020)._ [__Fireside Chat with John Chodacki. Today's Guests David Shotton & Silvio Peroni__](https://www.youtube.com/watch?v=-bCPS2iIdCc)
+* _Zeeba TV (2017)._ [__OpenCitations: structured open citation data as a part of the Commons__](https://www.youtube.com/watch?v=_A4cD9N3nFM)
+* _Zeeba TV (2019)._ [__COCI, the OpenCitations Index of Crossref open DOI-to-DOI citations - Ivan Heibi__](https://www.youtube.com/watch?v=l4EHwxFMefU)
+
+## Other resources
+In addition to this, I also had an initial look at the source code provided in the [CCC GitHub repository][ccc_repo] and I started studying Python libraries such as [unittest][unittest] (for unit-testing) and [threading][threading] (for providing multithreading capabilities to the script).
+
+[opencitations]:        https://opencitations.net
+[research_scholarship]: https://bandi.unibo.it/agevolazioni/borse-ricerca?id_bando=52
+[essepuntato]:          https://essepuntato.github.io
+[wellcome]:             https://wellcome.ac.uk/
+[ccc_repo]:             https://github.com/opencitations/ccc
+[unittest]:             https://docs.python.org/3/library/unittest.html
+[threading]:            https://docs.python.org/3/library/threading.html
