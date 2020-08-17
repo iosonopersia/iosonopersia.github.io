@@ -5,8 +5,11 @@ date:   2020-08-17 17:50:00 +0200
 categories: blog ocwr
 ---
 # Introduction
-The goal of the second week was to do a complete code refactoring of `graphlib.py` from the [CCC repository][ccc], a Python module which reflects the OCDM (OpenCitations Data Model) and makes it possible to easily construct Python objects that can later be stored persistently as
-RDF graphs through the use of `storer.py`. Hence, I firstly had to analyze the module in order to understand its inner workings.
+The goal of the second week was to do a complete code refactoring of `graphlib.py` from the [CCC repository][ccc], a Python module which 
+reflects the OCDM (OpenCitations Data Model) and makes it possible to easily construct Python objects that can later be stored 
+persistently as RDF graphs through the use of `storer.py`. Hence, I firstly had to analyze the module in order to understand its inner 
+workings.
+
 The original `graphlib.py` module defines four classes: `GraphEntity`, `GraphSet`, `ProvEntity` and `ProvSet`. The latter two classes
 implement the data model section related to the provenance of the stored entities: since -- at least at this stage of the project --
 we are still unsure about how to improve the logic behind these classes (as it's the main goal of the entire 5-months period), I skipped
@@ -20,6 +23,8 @@ represents more closely all the different entities stored by OpenCitations. Prev
 of a generic entity described by the OCDM. Now, `GraphEntity` is the base class of some more specific classes which inherit from it
 only a handful of methods (among them, the _constructor_): because of this, every other method had to be moved into the right subclass
 according to the OCDM definitions.
+
+__[Download link][1]: click here to download a simple UML graph that shows the new class hierarchy.__
 
 Then, it was `GraphSet`'s turn: this class acts both as a collection of `GraphEntity` objects and as a factory to easily instantiate them.
 In fact, it provides a set of factory methods such as `add_an(...)`, `add_br(...)`, `add_ci(...)`, etc. : while previously these methods
@@ -75,10 +80,11 @@ if TYPE_CHECKING:
 (`typings.TYPE_CHECKING` is always `False` at runtime)
 
 ## Tests
-As for unit testing, I arranged a `test` folder inside the [oc_graphlib repository][oc_graphlib_github] which will contain a test module
+As for unit testing, I arranged a `tests` folder inside the [oc_graphlib repository][oc_graphlib_github] which will contain a test module
 for each `oc_graphlib`'s class. I still haven't written any test at this moment: it's surely something that needs to be done in the 
 following week.
 
+[1]:                   {{ site.url }}/downloads/OCDM.pdf
 [ccc]:                 https://github.com/opencitations/ccc
 [ocdm-2.0.1]:          https://figshare.com/articles/Metadata_for_the_OpenCitations_Corpus/3443876
 [oc_graphlib_github]:  https://github.com/iosonopersia/oc_graphlib
