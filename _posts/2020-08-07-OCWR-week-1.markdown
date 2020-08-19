@@ -22,7 +22,7 @@ During the week I read many scholar papers suggested by prof. Peroni. In particu
 
 ### Data model
 * _Marilena Daquino, Silvio Peroni, David M. Shotton, Giovanni Colavizza, Behnam Ghavimi, Anne Lauscher, Philipp Mayr, Matteo Romanello, Philipp Zumstein (2020)._ [__The OpenCitations Data Model.__](https://arxiv.org/abs/2005.11981) 
-* _Marilena Daquino, Silvio Peroni, David Shotton (2020)._ [__The OpenCitations Data Model.__](https://doi.org/10.6084/m9.figshare.3443876) _Figshare._
+* _Marilena Daquino, Silvio Peroni, David Shotton (2020)._ [__The OpenCitations Data Model.__](https://doi.org/10.6084/m9.figshare.3443876.v7) _Figshare._
 
 ### Currently adopted provenance-tracking technique
 * _Silvio Peroni, David Shotton, Fabio Vitali (2016)._ [__A document-inspired way for tracking changes of RDF data - The case of the OpenCitations Corpus.__](https://w3id.org/oc/paper/occ-driftalod2016.html) _In Proceedings of 1st Workshop on Detection, Representation and Management of Concept Drift in Linked Open Data (Drift-a-LOD 2016): 26-33._
