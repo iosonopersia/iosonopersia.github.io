@@ -30,8 +30,8 @@ Then, it was `GraphSet`'s turn: this class acts both as a collection of `GraphEn
 In fact, it provides a set of factory methods such as `add_an(...)`, `add_br(...)`, `add_ci(...)`, etc. : while previously these methods
 returned a generic `GraphEntity` object, now they produce an object of the right subclass. This brings a lot of advantages to the library
 since it leaves less room for errors, as it's now impossible to call a method of class A on a class B instance, while previously every 
-method was defined in the same `GraphEntity` class. This required some changes to the semantics of  the `_add(...)` and `_add_ci(...)` 
-methods and the removal of the -- now useless -- `_generate_entity(...)` (both from `GraphSet` and `ProvSet`).
+method was defined in the same `GraphEntity` class. __This required some changes to the semantics of  the `_add(...)` and `_add_ci(...)` 
+methods and the removal of the -- now useless -- `_generate_entity(...)` (both from `GraphSet` and `ProvSet`).__
 
 In the end, I created a new [personal GitHub repository][oc_graphlib_github] which contains all of the new code. It's called 
 `oc_graphlib` and it's organized as a list of files, one for each Python class. It was created and initialized through the use
