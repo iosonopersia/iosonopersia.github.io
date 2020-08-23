@@ -1,0 +1,86 @@
+---
+layout: post
+title:  "[OCWR] Week 3 - OpenCitations Weekly Report"
+date:   2020-08-23 14:50:00 +0200
+categories: blog ocwr
+---
+# Introduction
+The goal of the third week was to complete the code refactoring of `graphlib.py`. To get to that point, all the classes had to be 
+completed with their missing methods, a test for each class had to be written and the code had to be filled with docstrings 
+in order to provide some initial level of documentantion. I also had to write a proper `README.md` file for the 
+[online repository][oc_graphlib_github] and I had to refactor the code from `datasethandler.py` (have a look [here][datasethandler]) into two distinct Python modules: `dataset.py` and `distribution.py`.
+
+# Report
+
+## Added missing methods
+Strictly following the latest version of the OCDM described in [this document][ocdm-2.0.1], I added the missing methods of each class 
+belonging to the `GraphEntity` subclasses hierarchy. A list of them is provided below:
+
+__BibliographicResource__
+  * has_edition
+  * has_related_document
+
+__Citation__
+  * has_citation_creation_date
+  * has_citation_time_span
+  * has_citation_characterization
+  * create_self_citation
+  * create_affiliation_self_citation
+  * create_author_network_self_citation
+  * create_author_self_citation
+  * create_funder_self_citation
+  * create_journal_self_citation
+  * create_journal_cartel_citation
+  * create_distant_citation
+
+__ResponsibleAgent__
+  * has_related_agent
+
+__ResourceEmbodiment__
+  * create_digital_embodiment
+  * create_print_embodiment
+  * has_url
+  * has_media_type
+
+__DiscourseElement__
+  * create_section
+  * create_section_title
+  * create_paragraph
+  * create_table
+  * create_footnote
+  * create_caption
+
+__ReferencePointer__
+  * has_next_rp
+
+## Unit Testing
+Inside the `tests` folder of the [oc_graphlib repository][oc_graphlib_github] (prepared in advance during last week), I created a test module
+for each `oc_graphlib`'s class. Some tests may still be missing, but I hope to finish them as soon as possible.
+
+Since many of the methods from `oc_graphlib`'s classes are very similar to each other, the vast majority of the respective tests turned out
+to be similar. Here is an example of the most common type of test:
+
+``` python
+    def test_has_id(self):
+        result = self.entity.has_id(self.identifier)
+        self.assertIsNone(result)
+
+        triple = URIRef(str(self.entity)), GraphEntity.has_identifier, URIRef(str(self.identifier))
+        self.assertIn(triple, self.entity.g)
+```
+
+## Documentation and README.md
+During the week, I found very little time to be dedicated to documentation writing. Hence, I had only the possibility of writing class docstrings
+using the definitions provided by the [OCDM][ocdm-2.0.1]. Docstrings for the methods are still missing.
+
+I wrote a `README.md` file with information about how to manage the [Poetry][poetry] package and how to run tests locally.
+
+## DatasetHandler code refactoring
+I started the `DatasetHandler` code refactoring, creating two separate classes: `Dataset` inside `dataset.py` and `Distribution` inside 
+`distribution.py`. I added to both classes the methods from `datasethandler.py` that respectively belong to each of them and I added Type Hints
+for each method. Additional work may be needed in the near future.
+
+[datasethandler]:      https://github.com/opencitations/ccc/blob/master/scripts/script/ocdm/datasethandler.py
+[oc_graphlib_github]:  https://github.com/iosonopersia/oc_graphlib
+[ocdm-2.0.1]:          https://figshare.com/articles/Metadata_for_the_OpenCitations_Corpus/3443876
+[poetry]:              https://python-poetry.org/
