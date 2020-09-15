@@ -4,6 +4,8 @@ title:  "[OCWR] Week 1 - OpenCitations Weekly Report"
 date:   2020-08-07 16:36:00 +0200
 categories: blog ocwr
 ---
+`Week from Aug 03 to Aug 09`
+
 # Introduction
 This is the first weekly report related to my proceedings in the [OpenCitations][opencitations] post-degree [research scholarship][research_scholarship] I'm currently involved in. \\
 The research project, lead by professor [Silvio Peroni][essepuntato] from University of Bologna and funded by the [Wellcome Trust][wellcome], will take 5 months starting from August and ending on December 2020. \\

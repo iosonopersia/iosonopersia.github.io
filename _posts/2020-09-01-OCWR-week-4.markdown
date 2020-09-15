@@ -4,6 +4,8 @@ title:  "[OCWR] Week 4 - OpenCitations Weekly Report"
 date:   2020-09-01 20:50:00 +0200
 categories: blog ocwr
 ---
+`Week from Aug 24 to Aug 30`
+
 # Introduction
 During the fourth week I continued working on the [oc_graphlib project][oc_graphlib_github].
   * I fixed some issues in the source code

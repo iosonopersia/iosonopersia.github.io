@@ -4,6 +4,8 @@ title:  "[OCWR] Week 2 - OpenCitations Weekly Report"
 date:   2020-08-17 17:50:00 +0200
 categories: blog ocwr
 ---
+`Week from Aug 10 to Aug 16`
+
 # Introduction
 The goal of the second week was to do a complete code refactoring of `graphlib.py` from the [CCC repository][ccc], a Python module which 
 reflects the OCDM (OpenCitations Data Model) and makes it possible to easily construct Python objects that can later be stored 

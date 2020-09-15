@@ -4,6 +4,8 @@ title:  "[OCWR] Week 3 - OpenCitations Weekly Report"
 date:   2020-08-23 14:50:00 +0200
 categories: blog ocwr
 ---
+`Week from Aug 17 to Aug 23`
+
 # Introduction
 The goal of the third week was to complete the code refactoring of `graphlib.py`. To get to that point, all the classes had to be 
 completed with their missing methods, a test for each class had to be written and the code had to be filled with docstrings 

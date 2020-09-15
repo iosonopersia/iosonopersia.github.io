@@ -4,6 +4,8 @@ title:  "[OCWR] Week 5 - OpenCitations Weekly Report"
 date:   2020-09-06 20:50:00 +0200
 categories: blog ocwr
 ---
+`Week from Aug 31 to Sep 06`
+
 # Introduction
 During the fifth week I continued working on the [oc_graphlib project][oc_graphlib_github].
   * I added a missing method to the `DiscourseElement` class to fix a problem found last week during the integration test with [BEE][bee] and
