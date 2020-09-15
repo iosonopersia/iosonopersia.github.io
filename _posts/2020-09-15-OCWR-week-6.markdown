@@ -1,0 +1,34 @@
+---
+layout: post
+title:  "[OCWR] Week 6 - OpenCitations Weekly Report"
+date:   2020-09-15 14:10:00 +0200
+categories: blog ocwr
+---
+`Week from Sep 07 to Sep 13`
+
+# Introduction
+The goal of the sixth week was to actually implement the strategy described in the previous report for randomly accessing a specific line in a 
+big text file without too much performance overhead.
+
+# Report
+
+## Implementing a technique to randomly access a line inside a text file
+I spent the whole week working on the implementation of the random access technique described in the previous weekly report. In particular, this 
+technique is needed for the `generate_provenance` method of the `ProvSet` class. Several methods were added to the `ProvSet` class, in 
+particular:
+  * `get_line_len(file: BinaryIO) -> int`, which reads the "provenance info file" to find out how long its lines currently are;
+  * `increase_line_len(file_path: str, old_length: int, new_length: int) -> None`, which increases the length of each line of the "provenance 
+  info file" in order to match the `new_length` parameter;
+  * `fix_previous_lines(file: BinaryIO, line_len: int) -> None`, which reads backwards the "provenance info file" removing NULL characters and  
+  adding missing `\n` characters in the right positions.
+
+`ProvSet` inherits the `_read_number` and `_add_number` methods from its base class `GraphSet`. These two methods had to be rewritten in order 
+for them to follow the new logic. At the start of every `_read_number` call, `get_line_len` is now invoked. `increase_line_len` is now called 
+inside `_add_number` only when the updated number to be written does not fit into the line because of the current line length being too short.
+Finally, `fix_previous_lines` is now called at the end of `_add_number`, as it starts fixing lines going backwards from the position of the 
+lastly written line.
+
+The new algorithm has been tested and it turned out to be pretty fast: the `generate_provenance` method now only takes consistently around 1 to 
+1.5 seconds to execute with small test data. It will be committed to the [online GitHub repository][oc_graphlib_github] as soon as possible.
+
+[oc_graphlib_github]:  https://github.com/iosonopersia/oc_graphlib
