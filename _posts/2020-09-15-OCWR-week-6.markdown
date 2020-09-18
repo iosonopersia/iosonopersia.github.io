@@ -16,16 +16,16 @@ big text file without too much performance overhead.
 I spent the whole week working on the implementation of the random access technique described in the previous weekly report. In particular, this 
 technique is needed for the `generate_provenance` method of the `ProvSet` class. Several methods were added to the `ProvSet` class, in 
 particular:
-  * `get_line_len(file: BinaryIO) -> int`, which reads the "provenance info file" to find out how long its lines currently are;
-  * `increase_line_len(file_path: str, old_length: int, new_length: int) -> None`, which increases the length of each line of the "provenance 
+  * `_get_line_len(file: BinaryIO) -> int`, which reads the "provenance info file" to find out how long its lines currently are;
+  * `_increase_line_len(file_path: str, old_length: int, new_length: int) -> None`, which increases the length of each line of the "provenance 
   info file" in order to match the `new_length` parameter;
-  * `fix_previous_lines(file: BinaryIO, line_len: int) -> None`, which reads backwards the "provenance info file" removing NULL characters and  
+  * `_fix_previous_lines(file: BinaryIO, line_len: int) -> None`, which reads backwards the "provenance info file" removing NULL characters and  
   adding missing `\n` characters in the right positions.
 
 `ProvSet` inherits the `_read_number` and `_add_number` methods from its base class `GraphSet`. These two methods had to be rewritten in order 
-for them to follow the new logic. At the start of every `_read_number` call, `get_line_len` is now invoked. `increase_line_len` is now called 
+for them to follow the new logic. At the start of every `_read_number` call, `_get_line_len` is now invoked. `_increase_line_len` is now called 
 inside `_add_number` only when the updated number to be written does not fit into the line because of the current line length being too short.
-Finally, `fix_previous_lines` is now called at the end of `_add_number`, as it starts fixing lines going backwards from the position of the 
+Finally, `_fix_previous_lines` is now called at the end of `_add_number`, as it starts fixing lines going backwards from the position of the 
 lastly written line.
 
 The new algorithm has been tested and it turned out to be pretty fast: the `generate_provenance` method now only takes consistently around 1 to 
