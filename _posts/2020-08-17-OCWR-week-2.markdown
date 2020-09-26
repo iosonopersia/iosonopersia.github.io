@@ -35,8 +35,8 @@ since it leaves less room for errors, as it's now impossible to call a method of
 method was defined in the same `GraphEntity` class. __This required some changes to the semantics of  the `_add(...)` and `_add_ci(...)` 
 methods and the removal of the -- now useless -- `_generate_entity(...)` (both from `GraphSet` and `ProvSet`).__
 
-In the end, I created a new [personal GitHub repository][oc_graphlib_github] which contains all of the new code. It's called 
-`oc_graphlib` and it's organized as a list of files, one for each Python class. It was created and initialized through the use
+In the end, I created a new [personal GitHub repository][oc_ocdm_github] which contains all of the new code. It's called 
+`oc_ocdm` and it's organized as a list of files, one for each Python class. It was created and initialized through the use
 of [Poetry][poetry], a useful tool which makes really easy to produce and publish Python packages on online repositories such as
 [PyPi][pypi].
 
@@ -77,19 +77,19 @@ logic where needed:
 ``` python
 from typing import TYPE_CHECKING
 if TYPE_CHECKING:
-    from oc_graphlib.bibliographic_resource import BibliographicResource
+    from oc_ocdm.bibliographic_resource import BibliographicResource
 ```
 (`typings.TYPE_CHECKING` is always `False` at runtime)
 
 ## Tests
-As for unit testing, I arranged a `tests` folder inside the [oc_graphlib repository][oc_graphlib_github] which will contain a test module
-for each `oc_graphlib`'s class. I still haven't written any test at this moment: it's surely something that needs to be done in the 
+As for unit testing, I arranged a `tests` folder inside the [oc_ocdm repository][oc_ocdm_github] which will contain a test module
+for each `oc_ocdm`'s class. I still haven't written any test at this moment: it's surely something that needs to be done in the 
 following week.
 
 [1]:                   {{ site.url }}/downloads/OCDM.pdf
 [ccc]:                 https://github.com/opencitations/ccc
 [ocdm-2.0.1]:          https://figshare.com/articles/Metadata_for_the_OpenCitations_Corpus/3443876
-[oc_graphlib_github]:  https://github.com/iosonopersia/oc_graphlib
+[oc_ocdm_github]:      https://github.com/iosonopersia/oc_ocdm
 [poetry]:              https://python-poetry.org/
 [pypi]:                https://pypi.org/
 [pydoc]:               https://www.pydoc.io/

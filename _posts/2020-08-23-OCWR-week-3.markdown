@@ -10,7 +10,7 @@ categories: blog ocwr
 The goal of the third week was to complete the code refactoring of `graphlib.py`. To get to that point, all the classes had to be 
 completed with their missing methods, a test for each class had to be written and the code had to be filled with docstrings 
 in order to provide some initial level of documentantion. I also had to write a proper `README.md` file for the 
-[online repository][oc_graphlib_github] and I had to refactor the code from `datasethandler.py` (have a look [here][datasethandler]) into two distinct Python modules: `dataset.py` and `distribution.py`.
+[online repository][oc_ocdm_github] and I had to refactor the code from `datasethandler.py` (have a look [here][datasethandler]) into two distinct Python modules: `dataset.py` and `distribution.py`.
 
 # Report
 
@@ -56,10 +56,10 @@ __ReferencePointer__
   * has_next_rp
 
 ## Unit Testing
-Inside the `tests` folder of the [oc_graphlib repository][oc_graphlib_github] (prepared in advance during last week), I created a test module
-for each `oc_graphlib`'s class. Some tests may still be missing, but I hope to finish them as soon as possible.
+Inside the `tests` folder of the [oc_ocdm repository][oc_ocdm_github] (prepared in advance during last week), I created a test module
+for each `oc_ocdm`'s class. Some tests may still be missing, but I hope to finish them as soon as possible.
 
-Since many of the methods from `oc_graphlib`'s classes are very similar to each other, the vast majority of the respective tests turned out
+Since many of the methods from `oc_ocdm`'s classes are very similar to each other, the vast majority of the respective tests turned out
 to be similar. Here is an example of the most common type of test:
 
 ``` python
@@ -83,6 +83,6 @@ I started the `DatasetHandler` code refactoring, creating two separate classes: 
 for each method. Additional work may be needed in the near future.
 
 [datasethandler]:      https://github.com/opencitations/ccc/blob/master/scripts/script/ocdm/datasethandler.py
-[oc_graphlib_github]:  https://github.com/iosonopersia/oc_graphlib
+[oc_ocdm_github]:      https://github.com/iosonopersia/oc_ocdm
 [ocdm-2.0.1]:          https://figshare.com/articles/Metadata_for_the_OpenCitations_Corpus/3443876
 [poetry]:              https://python-poetry.org/

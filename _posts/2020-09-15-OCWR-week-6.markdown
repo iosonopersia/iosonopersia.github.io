@@ -29,6 +29,6 @@ Finally, `_fix_previous_lines` is now called at the end of `_add_number`, as it 
 lastly written line.
 
 The new algorithm has been tested and it turned out to be pretty fast: the `generate_provenance` method now only takes consistently around 1 to 
-1.5 seconds to execute with small test data. It will be committed to the [online GitHub repository][oc_graphlib_github] as soon as possible.
+1.5 seconds to execute with small test data. It will be committed to the [online GitHub repository][oc_ocdm_github] as soon as possible.
 
-[oc_graphlib_github]:  https://github.com/iosonopersia/oc_graphlib
+[oc_ocdm_github]:      https://github.com/iosonopersia/oc_ocdm

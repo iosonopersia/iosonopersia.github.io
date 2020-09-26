@@ -7,7 +7,7 @@ categories: blog ocwr
 `Week from Aug 31 to Sep 06`
 
 # Introduction
-During the fifth week I continued working on the [oc_graphlib project][oc_graphlib_github].
+During the fifth week I continued working on the [oc_ocdm project][oc_ocdm_github].
   * I added a missing method to the `DiscourseElement` class to fix a problem found last week during the integration test with [BEE][bee] and
   [SPACIN][spacin]
   * I continued adding missing tests, Type Hints and docstrings to the `GraphSet`, `ProvSet` and `ProvEntity` classes
@@ -28,7 +28,7 @@ and `ProvEntity` classes.
 ## Documentation provided by Sphinx
 As far as the documentation is concerned, I choosed to try `Sphinx`, a tool which provides an automated way for building a documentation. It 
 permits to automatically extract docstrings from the code and to export the documentation in a variety of different formats, such as HTML, PDF 
-and LaTex. I prepared the [oc_graphlib repo][oc_graphlib_github] in such a way that any developer could locally build the documentation 
+and LaTex. I prepared the [oc_ocdm repo][oc_ocdm_github] in such a way that any developer could locally build the documentation 
 while working on it and could later submit his/her contributions to the public repository. I obviously updated the `README.md` file of the 
 project to explain how to properly work with the documentation.
 
@@ -59,7 +59,7 @@ fastest strategy).
 The "seek and read" strategy enjoys a O(1) complexity, requiring a constant access time to each line of the file, making it quite suitable
 for our job. __As as potential drawback, particular attention must be kept by human agents that want to interact with the text file, since they must be sure not to change the length of any line as they would skew every reading from that point on.__
 
-[oc_graphlib_github]:  https://github.com/iosonopersia/oc_graphlib
+[oc_ocdm_github]:      https://github.com/iosonopersia/oc_ocdm
 [ocdm-2.0.1]:          https://figshare.com/articles/Metadata_for_the_OpenCitations_Corpus/3443876
 [metadata_repo]:       https://github.com/opencitations/metadata
 [sphinx]:              https://www.sphinx-doc.org/en/master/
