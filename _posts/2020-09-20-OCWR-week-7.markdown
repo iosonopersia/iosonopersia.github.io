@@ -1,0 +1,56 @@
+---
+layout: post
+title:  "[OCWR] Week 7 - OpenCitations Weekly Report"
+date:   2020-09-20 14:10:00 +0200
+categories: blog ocwr
+---
+`Week from Sep 14 to Sep 20`
+
+# Introduction
+During the seventh week, I mainly had to think about a new implementation to keep track of the `Citation` counters in an `info_file_ci.txt` 
+(similarly to what already happens for all the other types of entity). In the meanwhile, I also updated the `oc_ocdm` codebase with the new 
+algorithm for provenance text files described in last week report.
+
+# Report
+
+## Various updates to the codebase
+I fixed some wrong Type Hints in `prov_entity.py` and I added the missing tests related to the `ProvSet` class. I committed the new 
+implementation for the provenance text files described in last week report and I added the method `has_next_de` to the `ReferencePointer` class
+for compatibility with the module `jats2oc.py`.
+
+## Thinking about a new implementation for Citation counters
+As of now, the [OCDM][ocdm-2.0.1] states that a `Citation` must be identified by its [OCI][oci]. In case of an in-text citation, the identifier 
+is extended with an additional sequential number. The [OCI][oci] is generated from the two sequential numbers that identify, respectively, the 
+citing and the cited `BibliographicResource` entities. Since it's not a sequential number by itself, we don't have to keep track of it. Instead,
+for each different [OCI][oci], we must keep track of the last respective in-text citation stored in the corpus (since each of them is identified
+by a sequential number).
+
+After some reasoning, I came to the conclusion that the best possible non-overcomplicated solution would have been to mantain a
+`info_file_ci.txt` text file containing lines similar to those shown in the following example:
+```
+123456-987654 6
+1928374-902817462 10
+2938-1026 1
+```
+, where each line contains both the [OCI][oci] and the respective incremental counter separated by an empty space. Every line of the file should 
+be of the same length, hence a padding technique (such as the one described in the Week 5 report) must be used.
+
+Since the number of citations stored is very big and it's bound to become even bigger in the future (at the time of this writing, more than 733
+million citations have been stored in the OpenCitations Context Corpus!), read and write operations on this file can quickly become sources of 
+performance issues.
+
+Two opposite solutions came to my mind:
+  1. new lines are added in append mode (at the end of the file). This means that the lines in the file are not ordered based on the OCIs, hence
+     writing new lines is really quick but reading an existing line is really slow (it would require a linear search inside the entire file);
+  2. new lines are added inside the file so that the ordering based on the OCIs is preserved. This means that we can exploit the order of the
+     lines to "quickly" find a line by its OCI (this would require a binary search through the file), hence writing new line is really slow 
+     (since adding a line in the middle of the file requires to copy and rewrite its entire content) but reading an existing line is relatively 
+     quick.
+
+Splitting the file into smaller chunks could be an option, but this would complicate an already complicated enough situation.
+At the end of the week, I can say not to have found any practical solution to this problem other than to stop using the [OCI][oci] to identify
+citations in favour of a simple sequential number as in the case of every other entity stored in the corpus.
+
+[oc_ocdm_github]:      https://github.com/iosonopersia/oc_ocdm
+[ocdm-2.0.1]:          https://figshare.com/articles/Metadata_for_the_OpenCitations_Corpus/3443876
+[oci]:                 https://figshare.com/articles/Open_Citation_Identifier_Definition/7127816
