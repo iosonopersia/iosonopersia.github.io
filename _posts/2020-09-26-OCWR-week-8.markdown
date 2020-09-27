@@ -1,0 +1,63 @@
+---
+layout: post
+title:  "[OCWR] Week 8 - OpenCitations Weekly Report"
+date:   2020-09-26 22:30:00 +0200
+categories: blog ocwr
+---
+`Week from Sep 21 to Sep 27`
+
+# Introduction
+The eighth week started with the decision to change the way in which the citations are stored inside the corpus. It was decided that from
+now on every `Citation` will be identified by a sequential number (in exactly the same way as the other entities), while their [OCI][oci]
+will be stored as an additional `Identifier`. This decision came from the results exposed in the report from last week, since it appears to
+be the best choice performance-wise. As a consequence, some modifications have been made to the codebase during the week.
+
+# Report
+
+## Various modifications to the codebase
+I removed the `has_next_de` method from the `ReferencePointer` class. This method was added last week in the effort of reaching the complete
+compatibility with the previous external code that used to rely upon `graphlib.py`. It's now necessary to update `jats2oc.py` for it to follow
+more strictly the [OCDM][ocdm-2.0.1] prescriptions.
+
+I updated `README.md` with a suggestion useful to avoid getting a warning during documentation generation. I fixed a test method called 
+`test_is_context_of_rp_or_pl`, in which the `is_context_of_rp_or_pl` method from the `DiscourseElement` class was invoked with an argument
+of the wrong datatype. **I updated the `OCDM.pdf` file (which is downloadable from [here][1]).**
+
+I organized the modules contained inside the package in a hierarchical tree structure which better reflects the class hierarchies and is much 
+more intuitive. Thanks to the use of `__init__.py` files, new ways to import the `oc_ocdm` classes are now available. For example, the following
+import statement are now fully working:
+```python
+from oc_ocdm import GraphSet
+from oc_ocdm.support import get_short_name
+from oc_ocdm.entities import Identifier, BibliographicEntity
+from oc_ocdm.entities.bibliographic import AgentRole
+```
+
+I removed the dependency of `GraphSet` from the `Reporter` class, which was actually unused. The `reporter.py` module, being not used by any 
+other module of the package, was removed from the codebase.
+
+## Consequences of the new strategy for Citation identifiers
+I opened a new GitHub issue ([#8][issue8]) in the [opencitations/metadata repository][metadata_repo], with the goal of adding to the
+[OCDM][ocdm-2.0.1] the new option for the `Citation` identifier. Then, I had to add the missing method `create_oci` to the `Identifier` class. I 
+updated the `add_ci` method from `GraphSet`: it now internally calls `_add` instead of `_add_ci` (which was completely removed from the class).
+The method `_add` itself had to be fixed in a part related to the instantiation of provenance entities: it's now aligned with the new strategy 
+for provenance text files. 
+
+I also removed the dependency of `ProvSet` from the `ResourceFinder` class, which was still missing in the codebase. To achieve this result, I 
+had to implement the new method `_retrieve_last_snapshot` (together with its respective test method `test_retrieve_last_snapshot`) which 
+replaces the `retrieve_last_snapshot` and `add_prov_triples_in_filesystem` methods from `ResourceFinder`. Previously, to find the 
+last provenance snapshot of a particular entity, a local RDF storage file containing the data related to the entity was created (through the 
+use of `add_prov_triples_in_filesystem`). Then, a SPARQL query was performed on the local file (by invoking `retrieve_last_snapshot`), which 
+returned the URI of the last active snapshot of the entity. Thanks to the new strategy for the `Citation` identifier, it's now possible to read 
+the actual snapshot counter value from the `prov_file_XX.txt` text file, since now every entity (including citations) has its provenance 
+counters stored in that way. This obviously results in a big performance improvement over the previous implementation. At the end of the Week 6 
+report, I said that:
+> the `generate_provenance` method now only takes consistently around 1 to 1.5 seconds to execute with small test data
+
+With the changes explained before, it now only takes about 0.7 to 0.8 seconds to execute the same test!
+
+[ocdm-2.0.1]:          https://figshare.com/articles/Metadata_for_the_OpenCitations_Corpus/3443876
+[oci]:                 https://figshare.com/articles/Open_Citation_Identifier_Definition/7127816
+[metadata_repo]:       https://github.com/opencitations/metadata
+[1]:                   {{ site.url }}/downloads/OCDM.pdf
+[issue8]:              https://github.com/opencitations/metadata/issues/8
