@@ -1,0 +1,80 @@
+---
+layout: post
+title:  "[OCWR] Week 9 - OpenCitations Weekly Report"
+date:   2020-10-05 12:30:00 +0200
+categories: blog ocwr
+---
+`Week from Sep 28 to Oct 04`
+
+# Introduction
+During the ninth week, I worked on cleaning the package in various ways. Every bit of code responsible of handling the entity counters was 
+extrapolated from `GraphSet`/`ProvSet` and moved into the `oc_ocdm.counter_handler` subpackage. Every variable and function argument related to 
+that same responsibility was removed from the signature of both `GraphSet` and `ProvSet` constructors; the `GraphSet.add_ci` method signature was
+modified too, reflecting the changes made last week. As a result, a new 1.0.0 major release of the package was released on the [online GitHub 
+repository][oc_ocdm_github].
+
+# Report
+
+## Encapsulation of counter handling code inside CounterHandler subclasses
+The entire logic related to the handling of entity counters was extracted from `GraphSet`/`ProvSet` and it's now encapsulated inside the 
+`FilesystemCounterHandler` class. As an alternative, the `InMemoryCounterHandler` class was implemented, together with the abstract 
+`CounterHandler` base class and the two test modules for both implementations. This enables the possibility for the user/developer to
+choose one of the available implementations, with way more flexibility than before. Furthermore, extending the existing implementations is
+now much simpler for the package mantainers. As their respective names suggest, `FilesystemCounterHandler` provides an implementation based upon 
+filesystem storage, whilst `InMemoryCounterHandler` uses RAM memory as a --quicker but non-persistent-- storage support.
+
+## GraphSet.\_\_init\_\_, ProvSet.\_\_init\_\_ and GraphSet.add_ci signatures changed
+From now on, the URI of `Citation` objects won't contain the [OCI][oci] but a sequential integer just like every other entity. `GraphSet.add_ci` method 
+signature changed accordingly:
+```python
+# OLD signature
+add_ci(self, resp_agent: str, citing_res: BibliographicResource, cited_res: BibliographicResource,
+               rp_num: str = None, source_agent: str = None, source: str = None,
+               res: URIRef = None) -> Citation
+# NEW signature
+add_ci(self, resp_agent: str, source_agent: str = None, source: str = None, res: URIRef = None) -> Citation
+```
+**TIP:** the [OCI][oci] can still be associated to the citation as an Identifier object (see `Identifier.create_oci` method).
+
+`GraphSet` and `ProvSet` constructors have now a different signature. The old parameters `info_dir, n_file_item` (of both classes) and 
+`dir_split, default_dir` (of `ProvSet`) were removed. Moreover, both constructors require a new `counter_handler` parameter whose type
+should be a subclass of the `CounterHandler` abstract class.
+```python
+# OLD signatures
+class GraphSet:
+    def __init__(self, base_iri: str, context_path: str, info_dir: str, n_file_item: int = 1,
+                 supplier_prefix: str = "", forced_type: bool = False, wanted_label: bool = True) -> None:
+class ProvSet(GraphSet):
+    def __init__(self, prov_subj_graph_set: GraphSet, base_iri: str, context_path: str, default_dir: str,
+                 info_dir: str, dir_split: int, n_file_item: int, supplier_prefix: str,
+                 triplestore_url: str, wanted_label: bool = True) -> None:
+
+# NEW signatures
+class GraphSet:
+    def __init__(self, base_iri: str, context_path: str, counter_handler: CounterHandler,
+                 supplier_prefix: str = "", forced_type: bool = False, wanted_label: bool = True) -> None:
+class ProvSet(GraphSet):
+    def __init__(self, prov_subj_graph_set: GraphSet, base_iri: str, context_path: str,
+                 counter_handler: CounterHandler, supplier_prefix: str,
+                 triplestore_url: str, wanted_label: bool = True) -> None:
+```
+
+## New script and import statements optimization
+A new `clean_info_dir` script was implemented. It can be useful to empty the `info_dir` folder that is populated when the tests are run. To 
+execute the script, the following command should be issued:
+```bash
+poetry run clean_info_dir
+```
+Moreover, every import statement in the package was optimized (shortened) thanks to the new hierarchical module structure and to the particular usage of the `__init__.py` files. For example:
+```python
+# OLD statements
+from oc_ocdm.graph_set import GraphSet
+from oc_ocdm.entities.bibliographic.bibliographic_resource import BibliographicResource
+
+# NEW statements
+from oc_ocdm import GraphSet
+from oc_ocdm.entities.bibliographic import BibliographicResource
+```
+
+[oc_ocdm_github]:      https://github.com/iosonopersia/oc_ocdm
+[oci]:                 https://figshare.com/articles/Open_Citation_Identifier_Definition/7127816
