@@ -7,7 +7,7 @@ categories: blog ocwr
 `Week from Sep 28 to Oct 04`
 
 # Introduction
-During the ninth week, I worked on cleaning the package in various ways. Every bit of code responsible of handling the entity counters was 
+During the ninth week, I worked on cleaning the package in various ways. Every bit of code responsible for handling the entity counters was 
 extrapolated from `GraphSet`/`ProvSet` and moved into the `oc_ocdm.counter_handler` subpackage. Every variable and function argument related to 
 that same responsibility was removed from the signature of both `GraphSet` and `ProvSet` constructors; the `GraphSet.add_ci` method signature was
 modified too, reflecting the changes made last week. As a result, a new 1.0.0 major release of the package was released on the [online GitHub 
