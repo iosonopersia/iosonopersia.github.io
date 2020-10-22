@@ -1,0 +1,57 @@
+---
+layout: post
+title:  "[OCWR] Week 11 - OpenCitations Weekly Report"
+date:   2020-10-20 12:30:00 +0200
+categories: blog ocwr
+---
+`Week from Sep 12 to Oct 18`
+
+# Introduction
+During the eleventh week, many changes were made to the code of [`oc_ocdm`][oc_ocdm_github]. A lot of methods were added, some methods 
+changed had their names changed and a lot of useless code was removed. Half-way through the week, new functionalities were published 
+within a new minor release 1.1.0. Since some breaking changes were made afterwards, a new major release (2.0.0) should be released 
+during the next week.
+
+# Report
+
+## New remove methods
+I added a new "remove" method for each "add" method of each entity class. This makes it possible not only to add triples to an entity 
+but also to remove or replace existing ones. Actually, a line was drawn between single-valued and multi-valued properties (according to 
+the [OCDM][ocdm-2.0.1] specifications). From now on, based on the type of the property, the related "add" and "remove" method will 
+follow these rules:
+  * **single-valued properties**
+    + **"add"** -> the newly added value for the considered property will replace every previously existing values
+    + **"remove"** -> every existing value for the considered property will be deleted, no argument should be passed to these methods
+  * **multi-valued properties**
+    + **"add"** -> the new value for the considered property gets added to the existing ones, as if it was appended to a "list of 
+    values"
+    + **"remove"** -> if no argument is passed, every existing value for the considered property will be deleted, otherwise only the 
+    given value will be removed
+
+These changes were published within the 1.1.0 minor release.
+
+## Various changes to the codebase
+All around the codebase, a useless fragment of code was repeatedly used to extract the `URIRef` object associated with an entity: 
+`URIRef(str(entity))`. This used to exploit the `__str__` overridden method of `GraphEntity`, which in turn returned the value 
+`str(self.res)` (where `self.res` is already of the type `URIRef`!). The reported code fragment was simply replaced by `entity.res`, 
+which does exactly the same but without requiring any function call and any new object instantiation, which was a completely useless 
+waste of time/hardware resources.
+
+Then, I changed the name of some methods, as they now make more sense:
+  * `_create_annotation` from `BibliographicReference` became `create_annotation`
+  * `_create_annotation` from `ReferencePointer` became `create_annotation`
+  * `_create_body_annotation` from `ReferenceAnnotation` became `create_body_annotation`
+  * `is_context_of_rp_or_pl` from `DiscourseElement` was split into `is_context_of_rp` and `is_context_of_pl`
+  * `_create_citation` from `Citation` was split into `create_citing_entity` and `create_cited_entity`
+
+Moreover, "add" methods which add literal values do not return a boolean result anymore. From now on, it should always be assumed that 
+they work correctly. In case an empty literal value is passed to the method, an exception is now raised (instead of simply returning a 
+`False` result, that in principle could also not be detected).
+
+## Decorators used to enforce argument types
+An `accepts_only` decorator was defined and applied to each "add" and "remove" method of every entity class. This is needed to modify 
+the runtime behaviour of these methods, which are now able to eventually detect an argument of the wrong type and to raise a `TypeError` 
+exception. This change makes it much more difficult for the user to misuse the `oc_ocdm` package.
+
+[oc_ocdm_github]:      https://github.com/iosonopersia/oc_ocdm
+[ocdm-2.0.1]:          https://figshare.com/articles/Metadata_for_the_OpenCitations_Corpus/3443876
