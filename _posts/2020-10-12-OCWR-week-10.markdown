@@ -1,0 +1,33 @@
+---
+layout: post
+title:  "[OCWR] Week 10 - OpenCitations Weekly Report"
+date:   2020-10-12 12:30:00 +0200
+categories: blog ocwr
+---
+`Week from Oct 05 to Oct 11`
+
+# Introduction
+The tenth week was dedicated to code cleaning and refactoring. Some useless methods were removed, while others were added. The function 
+`_add` was split as to separate the logic related to the creation of the `GraphEntity` instances from the one used for `ProvEntity` 
+instances. A bug concerning the automatic URI generation for new entities was fixed, leading to a new 1.0.1 release.
+
+# Report
+
+## Code cleaning and refactoring
+Firstly, every bit of code related to the field `res_count` of the class `GraphSet` was removed. Actually, it was a useless value which 
+is not referenced from outside by any external software which makes use of the [oc_ocdm package][oc_ocdm_github]. The `GraphSet` test file was updated 
+accordingly.
+
+The internal method `_add` of `GraphSet` was split into `_add` and `_add_prov`, each one responsible only for the instantiation of 
+(respectively) `GraphEntity` instances and `ProvEntity` instances. This simplifies the code and leads to a better separation of 
+responsibilities.
+
+## Fixing a bug and a warning
+I fixed a warning caused by the signature of the newly created `_add_prov` method, which had a default mutable value for the argument `list_of_entities`. I simply replaced the default empty list with an empty tuple (which is immutable).
+
+I then fixed a bug in the constructor of `GraphEntity` that caused the URIs of each new entity to contain their `short_name` twice. For example, `http://test/br/br/1` was generated while the correct URI would have been `http://test/br/1`. After this bugfix, I bumped the version number of the package to the 1.0.1 release.
+
+## New functionalities
+A new `remove_entity` method was added to the `GraphEntity`class. This method makes it possible to remove in a single step every triple contained by a `GraphEntity` instance. Furthermore, thanks to some new methods of the `GraphSet` class, it is now possible to extract a tuple containing all the entities of the same type which are contained inside the `GraphSet`. For example, it’s now possible to get all the `ReferenceAnnotation` instances in a `GraphSet` just by calling the method `get_an`.
+
+[oc_ocdm_github]:      https://github.com/iosonopersia/oc_ocdm
