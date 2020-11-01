@@ -4,7 +4,7 @@ title:  "[OCWR] Week 11 - OpenCitations Weekly Report"
 date:   2020-10-20 12:30:00 +0200
 categories: blog ocwr
 ---
-`Week from Sep 12 to Oct 18`
+`Week from Oct 12 to Oct 18`
 
 # Introduction
 During the eleventh week, many changes were made to the code of [`oc_ocdm`][oc_ocdm_github]. A lot of methods were added, some methods 
