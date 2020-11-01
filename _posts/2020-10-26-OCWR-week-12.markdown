@@ -1,0 +1,73 @@
+---
+layout: post
+title:  "[OCWR] Week 12 - OpenCitations Weekly Report"
+date:   2020-10-26 10:15:00 +0200
+categories: blog ocwr
+---
+`Week from Oct 19 to Oct 25`
+
+# Introduction
+During the twelfth week, I made some breaking changes to the code of [`oc_ocdm`][oc_ocdm_github] which lead to the publishing of a new major release 2.0.0. A lot of methods had their names changed and a set of boolean flags was added to the `GraphEntity` class. Moreover, I had to think about the implementation of new "delete", "merge" and "import_from_graph" operations applied to `GraphEntity` instances, which will be concretely done next week.
+
+
+# Report
+
+## Methods with new names
+**With respect to the changes already done last week**, a lot of methods had their names changed, following the a rule which says that only those methods that add/remove `rdf:type` related triples should have a name starting with `create_`:
+
+  * **BibliographicReference**:
+    * from `create_annotation` to `has_annotation`
+    * from `create_content` to `has_content`
+  * **Citation**:
+    * from `create_citing_entity` to `has_citing_entity`
+    * from `create_cited_entity` to `has_cited_entity`
+  * **DiscourseElement**:
+    * from `create_title` to `has_title`
+    * from `create_content` to `has_content`
+    * from `create_number` to `has_number`
+  * **ReferenceAnnotation**:
+    * from `create_body_annotation` to `has_body_annotation`
+  * **ReferencePointer**:
+    * from `create_annotation` to `has_annotation`
+    * from `create_content` to `has_content`
+  * **PointerList**:
+    * from `create_content` to `has_content`
+  * **BibliographicResource**:
+    * from `create_title` to `has_title`
+    * from `create_subtitle` to `has_subtitle`
+    * from `create_pub_date` to `has_pub_date`
+    * from `create_number` to `has_number`
+  * **ResourceEmbodiment**:
+    * from `create_starting_page` to `has_starting_page`
+    * from `create_ending_page` to `has_ending_page`
+  * **ResponsibleAgent**:
+    * from `create_name` to `has_name`
+    * from `create_given_name` to `has_given_name`
+    * from `create_family_name` to `has_family_name`
+  * **GraphEntity**:
+    * from `remove_entity` to `remove_every_triple`
+  * **ProvEntity**:
+    * from `create_generation_time` to `has_generation_time`
+    * from `create_invalidation_time` to `has_invalidation_time`
+    * from `create_update_query` to `has_update_action`
+    * from `create_description` to `has_description`
+
+## Newly added flags to the GraphEntity class
+A new Python module called `entity_flags.py` was written, defining a class containing some important flags that will come in handy next 
+week when I'll be working on the implementation of "delete", "merge" and "import_from_graph" operations. Here's a list of those flags 
+with an explanation of their meaning:
+
+  * `is_a_new_entity`\\
+It's used to know if the considered entity is a new entity (it still doesn't exists) or not. If a "new entity" gets stored anywhere on a 
+persistent support, than it's no more considered as "new" and the flag value will become `False`.
+  * `preexisting_graph_was_loaded`\\
+It's used to know if the field `preexisting_graph` of the considered entity was initialized with a graph provided by the user
+to the `GraphEntity`'s constructor.
+  * `to_be_deleted`\\
+It's a flag which is settable by the user in order to mark the considered entity as to be deleted from the persistent storage or not.
+  * `was_merged`\\
+It's set as `True` if at least one "merge" operation is performed on the considered entity. In such a case, a field containing the list 
+of other entities with which these operations were done (a field which is currently missing) should be kept inside the `GraphEntity` 
+instance.
+
+[oc_ocdm_github]:      https://github.com/iosonopersia/oc_ocdm
