@@ -1,0 +1,62 @@
+---
+layout: post
+title:  "[OCWR] Week 13 - OpenCitations Weekly Report"
+date:   2020-11-01 13:00:00 +0200
+categories: blog ocwr
+---
+`Week from Oct 26 to Nov 01`
+
+# Introduction
+During the thirteenth week, many changes were made to the code of [`oc_ocdm`][oc_ocdm_github]. Exploiting the presence of the flags
+introduced in the last week report, I added a method to mark an entity as to be deleted (the "delete" method). I added two more fields 
+to the `GraphEntity` class, I added the "remove" methods to the `ProvEntity` class (for which they were still missing), I removed every 
+entity method that had inverse logic and/or that used to modify not its instance but the one of another entity, I added "getter" methods 
+to easily extract information out of the entities and, finally, I added the "merge" and the "import_from_graph" methods.
+
+# Report
+
+## Various fixes to the codebase
+Remove methods in the `ProvEntity` class have been missing since the 1.1.0 release. I added them and I fixed the test functions accordingly.
+
+Across the various entities, a few methods had a strange behaviour: either they applied an inverse logic with respect to the [OCDM]
+[ocdm-2.0.1] prescriptions, or they added/removed a triple not from their own graph but from the one of another entity. This used to
+lead to a certain amount of unpredictability since the user couldn't know in advance what entity would have been affected by the 
+execution of a method on another entity. Since this would have made adding the new "getter", "merge" and "import_from_graph" methods
+very difficult, I chose to fix this problem once for all.
+
+The following changes were made:
+  * **AgentRole**
+    * from `follows(self, ar_res: AgentRole)` to `has_next(self, ar_res: AgentRole)`
+    * from `remove_follows` to `remove_next`
+    * _added_ `is_held_by(self, ra_res: ResponsibleAgent)` and `remove_held_by`
+    * from `create_publisher(self, br_res: BibliographicResource)` to `create_publisher(self)`
+    * from `create_author(self, br_res: BibliographicResource)` to `create_author(self)`
+    * from `create_editor(self, br_res: BibliographicResource)` to `create_editor(self)`
+    * from `remove_role_and_document` to `remove_role_type`
+  * **BibliographicReference**
+    * _added_ `references_br(self, br_res: BibliographicResource)` and `remove_references`
+  * **BibliographicResource**
+    * from `has_part(self, br_res: BibliographicResource)` to `is_part_of(self, br_res: BibliographicResource)`
+    * from `remove_part` to `remove_part_of`
+    * _deleted_ `contained_in_discourse_element(self, de_res: DiscourseElement)`
+    * _added_ `has_contributor(self, ar_res: AgentRole)` and `remove_contributor`
+    * _deleted_ `has_reference(self, be_res: BibliographicReference)` and `remove_reference`
+  * **DiscourseElement**
+    * _deleted_ `contained_in_discourse_element(self, de_res: DiscourseElement)`
+  * **ResponsibleAgent**
+    * _deleted_ `has_role(self, ar_res: AgentRole)` and `remove_role`
+
+## New GraphEntity fields and new getter methods
+I added two new fields to the `GraphEntity` class: `preexisting_graph` and `merge_list`. While the first one consists in a 
+`rdflib.Graph` which can be used to hold the representation of the already existing persistent data related to the considered 
+`GraphEntity` instance, the second is the list of `GraphEntity` instances (possibly empty) that have been merged into the considered one.
+
+I then added the "getter" methods to every entity class. Now it's much simpler to read the data contained inside an entity, just by 
+calling the corresponding method on the considered instance. All this methods have their name starting with `get_` and no parameter 
+has to be passed to them.
+
+## New "delete", "merge" and "import_from_graph" methods
+[...]
+
+[oc_ocdm_github]:      https://github.com/iosonopersia/oc_ocdm
+[ocdm-2.0.1]:          https://figshare.com/articles/Metadata_for_the_OpenCitations_Corpus/3443876
