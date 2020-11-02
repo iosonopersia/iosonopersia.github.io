@@ -8,7 +8,7 @@ categories: blog ocwr
 
 # Introduction
 During the eleventh week, many changes were made to the code of [`oc_ocdm`][oc_ocdm_github]. A lot of methods were added, some methods 
-changed had their names changed and a lot of useless code was removed. Half-way through the week, new functionalities were published 
+had their name changed and a lot of useless code was removed. Half-way through the week, new functionalities were published 
 within a new minor release 1.1.0. Since some breaking changes were made afterwards, a new major release (2.0.0) should be released 
 during the next week.
 
