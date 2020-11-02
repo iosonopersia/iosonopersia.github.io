@@ -16,7 +16,8 @@ to easily extract information out of the entities and, finally, I added the "mer
 # Report
 
 ## Various fixes to the codebase
-Remove methods in the `ProvEntity` class have been missing since the 1.1.0 release. I added them and I fixed the test functions accordingly.
+Remove methods in the `ProvEntity` class have been missing since the 1.1.0 release. I added them and I fixed the test functions 
+accordingly.
 
 Across the various entities, a few methods had a strange behaviour: either they applied an inverse logic with respect to the [OCDM]
 [ocdm-2.0.1] prescriptions, or they added/removed a triple not from their own graph but from the one of another entity. This used to
@@ -56,7 +57,21 @@ calling the corresponding method on the considered instance. All this methods ha
 has to be passed to them.
 
 ## New "delete", "merge" and "import_from_graph" methods
-[...]
+A new "delete" method was added to give the user the possibility of marking an entity as to be deleted: such an entity will be 
+effectively removed from the persistent storage during the "store" operation. This method is called `mark_as_to_be_deleted` and it takes 
+as input a boolean parameter which represents the value that will be put inside the `to_be_deleted` flag of the entity.
+
+In order to give the user the ability to merge together two entities of the same type, an appropriate "merge" method was added to each 
+entity class. From now on, on each `GraphEntity` instance it will be possible to call a method called `merge`. Executing `A.merge(B)`, 
+with A and B being two entities of the same type (instances of the same class), means that every triple from B is added to A (eventually 
+overwriting corresponding triples of A) and then that B is marked as to be deleted. Before being stored back in persistence, the entity 
+A can be merged with several other entities B<sub>i</sub> (with i=1..n): a list of references to all these B<sub>i</sub> instances that 
+were merged into A is kept in the field `A.merge_list`.
+
+Finally, the possibility of reconstructing proper `GraphEntity` instances starting from data imported from various sources was explored. 
+A new "import_from_graph" function is now able to enrich a `GraphSet` instance with entities extracted from a generic `rdflib.Graph`. As 
+for now, the graph must be provided by the user and the data it contains can come from whatever source. In future, we should consider 
+writing support functions which could help the user retrieving entities directly from online triplestores, RDF text files, etc. ...
 
 [oc_ocdm_github]:      https://github.com/iosonopersia/oc_ocdm
 [ocdm-2.0.1]:          https://figshare.com/articles/Metadata_for_the_OpenCitations_Corpus/3443876
