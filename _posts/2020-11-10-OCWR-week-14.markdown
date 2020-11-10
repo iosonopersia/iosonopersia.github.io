@@ -45,8 +45,7 @@ The commit history was edited during the week, with some old commits being sligh
 down. This was needed in order to be able to publish meaningful releases:
   * `2.1.0` (minor release). Starting from the `2.0.0` release, most of the additions shown in the 13th weekly report were included.
   * `2.1.1` (bugfix). Fixed both the bug and the warning shown in this report.
-  * `3.0.0` (major release). Fixed methods with inverse logic (see 13th weekly report), changed signature to the two methods that accept 
-  a date as input and renamed `rdflib.URIRef` type class variables (see this report).
+  * `3.0.0` (major release). Fixed methods with inverse logic (see 13th weekly report) and changed signature to the two methods that accept a date as input (see this report).
 
 Other changes will be included in a future release.
 
