@@ -1,0 +1,53 @@
+---
+layout: post
+title:  "[OCWR] Week 14 - OpenCitations Weekly Report"
+date:   2020-11-10 19:00:00 +0200
+categories: blog ocwr
+---
+`Week from Nov 02 to Nov 08`
+
+# Introduction
+During the fourteenth week, I reorganized the [online repository][oc_ocdm_github] by means of a rebasing activity: some old commits
+were slightly edited, others were moved up or down in the commit history, new tags/releases were added, ... A part from that, some
+more substantial changes were made too. A bug and a warning were both fixed, two methods had their signature changed, a lot of variables were renamed to avoid name conflicts with "add" methods, the `_create_type` implementation was fixed and, finally, missing "getter" and "remove_" methods were added to the `GraphEntity` class.
+
+# Report
+
+## The bug and the warning
+A bug was found in the `add_ci` method from `GraphSet`: the label produced by the `_add` method was not passed to the constructor of
+the `Citation` class. This small error was fixed so that labels can now be auto-generated for citations too.
+
+In the `remove_id` method of `BibliographicEntity`, a warning was raised by a local variable named `id` which shadowed the builtin
+Python name `id`. This issue was fixed simply by changing the name of the local variable to `id_res`.
+
+## Dates should be always passed to methods as ISO8601 strings
+From now on, every method in the library that accepts a date as an argument will mandatorily require an ISO8601 formatted string. Before
+this changes, the two methods `has_pub_date` of `BibliographicResource` and `has_citation_creation_date` of `Citation` required a list 
+containing at most three integers representing --respectively-- the year, the month and the day. The user can still work with dates in 
+that particular format but, in such a case, it must convert them to ISO8601 strings: an helper method from the `oc_ocdm.support` 
+subpackage named `create_date` can be used to achieve this goal in a simplified way.
+
+## Other changes
+Every class variable of `GraphEntity` and `ProvEntity` which consisted in a `rdflib.URIRef` instance was renamed with an `iri_` prefix. 
+This was really needed to avoid a name conflict between some of those variables and respective "add" methods. Now they're also more 
+easily distinguishable from other variables.
+
+The `_create_type` implementation (in the `GraphEntity` class) was updated: while the main RDF type associated with the entity must 
+always be preserved, a second type can be added to better specify the subclass to which the entity belongs. When a new type is specified,
+it's now used as a replacement for the secondary type of the entity (in case it's already existing) while the main type is kept 
+untouched.
+
+Methods `get_label`, `remove_label`, `get_types` and `remove_type` had to be added to the `GraphEntity` class, since they were still 
+missing.
+
+## Rebase activity and new releases
+The commit history was edited during the week, with some old commits being slightly fixed and others being moved chronologically up or 
+down. This was needed in order to be able to publish meaningful releases:
+  * `2.1.0` (minor release). Starting from the `2.0.0` release, most of the additions shown in the 13th weekly report were included.
+  * `2.1.1` (bugfix). Fixed both the bug and the warning shown in this report.
+  * `3.0.0` (major release). Fixed methods with inverse logic (see 13th weekly report), changed signature to the two methods that accept 
+  a date as input and renamed `rdflib.URIRef` type class variables (see this report).
+
+Other changes will be included in a future release.
+
+[oc_ocdm_github]:      https://github.com/iosonopersia/oc_ocdm
