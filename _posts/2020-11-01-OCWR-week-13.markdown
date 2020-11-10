@@ -16,7 +16,7 @@ to easily extract information out of the entities and, finally, I added the "mer
 # Report
 
 ## Various fixes to the codebase
-Remove methods in the `ProvEntity` class have been missing since the 1.1.0 release. I added them and I fixed the test functions 
+"Remove" methods in the `ProvEntity` class have been missing since the 1.1.0 release. I added them and I fixed the test functions 
 accordingly.
 
 Across the various entities, a few methods had a strange behaviour: either they applied an inverse logic with respect to the [OCDM]

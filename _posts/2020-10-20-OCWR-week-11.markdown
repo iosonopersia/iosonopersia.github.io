@@ -44,9 +44,8 @@ Then, I changed the name of some methods, as they now make more sense:
   * `is_context_of_rp_or_pl` from `DiscourseElement` was split into `is_context_of_rp` and `is_context_of_pl`
   * `_create_citation` from `Citation` was split into `create_citing_entity` and `create_cited_entity`
 
-Moreover, "add" methods which add literal values do not return a boolean result anymore. From now on, it should always be assumed that 
-they work correctly. In case an empty literal value is passed to the method, an exception is now raised (instead of simply returning a 
-`False` result, that in principle could also not be detected).
+**Moreover, "add" methods which add literal values do not return a boolean result anymore. From now on, it should always be assumed that 
+they work correctly.**
 
 ## Decorators used to enforce argument types
 An `accepts_only` decorator was defined and applied to each "add" and "remove" method of every entity class. This is needed to modify 
