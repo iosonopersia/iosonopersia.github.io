@@ -25,9 +25,7 @@ programmatically obtain the nodes that should be associated to a particular shap
 the [OCDM][ocdm-2.0.1]: as a way to help myself, I created a PDF 
 document which contains a sort of ER schema reflecting the shapes mandated by the [OCDM][ocdm-2.0.1].
 
-  * `OCDM ER schema.pdf` file (downloadable from [here][1])
-  * ShExC file (downloadable from [here][2])
-  * ShapeMap file (downloadable from [here][3])
+**The `OCDM ER schema.pdf` file is downloadable from [here][1].**
 
 ## GraphEntity subclasses are now singletons within the context of a GraphSet
 I modified the `add_` methods from `GraphSet` (such as `add_br`, `add_be`, `add_ci`, etc.). They now check whether the entity with the 
@@ -50,5 +48,3 @@ the encoding of files persisted by `scripts/script/bee/refstorer.py` and `script
 [bee]:                 https://github.com/opencitations/script/tree/master/bee
 [ocdm-2.0.1]:          https://figshare.com/articles/Metadata_for_the_OpenCitations_Corpus/3443876
 [1]:                   {{ site.url }}/downloads/OCDM%20ER%20schema.pdf
-[2]:                   {{ site.url }}/downloads/shexc.txt
-[3]:                   {{ site.url }}/downloads/querymap.txt
