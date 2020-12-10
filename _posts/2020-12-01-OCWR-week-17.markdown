@@ -12,7 +12,7 @@ implementation of `generate_provenance`.
 
 # Report
 
-## ShEx validator
+## ShEx validation
 I did other tests with the package [`PyShEx`][pyshex_github]. In particular, I tried with four 
 different variants of the ShExC file (which describes how a graph compliant with the 
 [OCDM][ocdm-2.0.1] should be shaped): in those variants I gradually relaxed more and more 
