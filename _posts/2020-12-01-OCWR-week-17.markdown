@@ -1,0 +1,74 @@
+---
+layout: post
+title:  "[OCWR] Week 17 - OpenCitations Weekly Report"
+date:   2020-12-01 19:00:00 +0200
+categories: blog ocwr
+---
+`Week from Nov 23 to Nov 29`
+
+# Introduction
+During the seventeenth week, I mainly worked on the [ShEx][shex_io] validator and on the new 
+implementation of `generate_provenance`.
+
+# Report
+
+## ShEx validator
+I did other tests with the package [`PyShEx`][pyshex_github]. In particular, I tried with four 
+different variants of the ShExC file (which describes how a graph compliant with the 
+[OCDM][ocdm-2.0.1] should be shaped): in those variants I gradually relaxed more and more 
+constraints, hoping to find a sweetspot that could allow me to validate a proper OCDM graph without 
+any problems.
+
+What I found this week was that only the most relaxed variant works without issues: to assert the 
+validity of a certain entity, this variant doesn't check if an entity referenced by the first one
+does itself fit into the required shape. Furthermore, it allows for extra triples not described in
+the [OCDM][ocdm-2.0.1] specification. This of course is very limiting and forces us to look for 
+another solution.
+
+Adding the shape constraint also to every entity referenced by the one _on focus_ causes a 
+`RecursionError`, where the maximum recursion depth is exceeded. On the other hand, both with
+and without that constraint, adding the `CLOSED` shape constraint results in a lot of valid entities 
+being evaluated as non valid, with hardly understandable error messages.
+
+Anyway, I modified the validation script in order to bypass the lack of `PyShEx` support for 
+QueryMap files. It now loops over all the subjects of the given `rdflib.Graph`, programmatically 
+inferring their type and applying a validation step to each of them separately.
+
+## Various fixes
+I fixed a type hint in the method signature of `get_entity` from the class `GraphSet`: the returned 
+value type is now `Optional` because there's the possibility for the method not to return anything.
+
+I also changed the signature of the `add_se` method from the `ProvSet` class. The `resp_agent`, 
+`source_agent` and `source` parameters are now obtained automatically from the provided 
+`prov_subject` and cannot be passed as arguments anymore.
+
+## New generate_provenance implementation
+A new implementation of the `generate_provenance` method was needed since the beginning, because
+the previous one was developed in a context in which only the "add a new entity to the triplestore" 
+operation was contemplated.
+
+The new implementation accepts as argument only a float value representing the timestamp which 
+should be interpreted as the "current time" by the algorithm. Every other parameter was removed
+as it can automatically obtained by the algorithm itself.
+
+The `generate_provenance` method now handles every possible situation that may occur by exploiting
+at its full the new [`oc_ocdm`][oc_ocdm_github] APIs added in the previous weeks. From now on, this
+method will be able to generate meaningful provenance snapshots of any [OCDM][ocdm-2.0.1] entity 
+which was created out of nothing, modified, merged with other entities or even deleted from the 
+triplestore.
+
+By invoking `generate_provenance`, a single provenance snapshot will be added to the triplestore for 
+each considered entity. This means that the complexities of the eventual sequence of operations 
+applied locally to the entity will be flattened into an overall most priority operation. For example:
+  * if the user creates a new entity and then it deletes it before storing it into the triplestore, 
+  no snapshot will be generated;
+  * on the other hand, if a user imports an existing entity into a `GraphSet` and then he/she 
+  applies some modifications to it while also merging it with other entities, the produced snapshot 
+  will contain information both for the edits and for the merge but it will be a "merge snapshot" 
+  since that is the higher priority operation between the two.
+
+
+[oc_ocdm_github]:      https://github.com/iosonopersia/oc_ocdm
+[shex_io]:             https://shex.io
+[ocdm-2.0.1]:          https://figshare.com/articles/Metadata_for_the_OpenCitations_Corpus/3443876
+[pyshex_github]:       https://github.com/hsolbrig/PyShEx
