@@ -1,0 +1,72 @@
+---
+layout: post
+title:  "[OCWR] Week 16 - OpenCitations Weekly Report"
+date:   2020-11-24 19:00:00 +0200
+categories: blog ocwr
+---
+`Week from Nov 16 to Nov 22`
+
+# Introduction
+During the sixteenth week I started working harder on the [ShEx][shex_io] validation for the
+[OCDM][ocdm-2.0.1]-compliant RDF graphs. I also started working on a new implementation for the 
+`generate_provenance` method of the class `ProvSet`, which is one of the fundamental goals of this
+project. The implementation I obtained is only a draft which will need further adjustments before
+its release in the [oc_ocdm repository][oc_ocdm_github].
+
+# Report
+
+## ShEx validation
+First things first, I needed a valid [OCDM][ocdm-2.0.1]-compliant RDF graph to experiment with. A 
+folder containing the output of [`SPACIN`][spacin] was sent to me via e-mail by 
+[Marilena Daquino][marilena], who is one of the main [UNIBO][unibo_it] researchers that work on the 
+[OpenCitations][opencitations] project.
+
+The output data coming from [`SPACIN`][spacin] is spread across various JSON-LD files which must be 
+parsed and joined into a single `rdflib.Graph` object. I then wrote a simple Python script which does
+all of these things automatically, recursively searching files into that folder and parsing them one 
+by one. The result is a `graph.ttl` RDF file which gets stored locally and that I can use for my 
+validation trials.
+
+I then created another script which is a work in progress [ShEx][shex_io] validator which will be 
+adjusted in the next weeks. I made use of the [PyShEx][pyshex_github] package, which unfortunaly is
+still in an alpha stage. This fact was made evident when trying for the first time to validate the
+`graph.ttl` file. I tried with two different variants of the ShExC file that I wrote last week with 
+no success at all. If I leave the ShExC file as it is, the script stops early with a 
+`RecursionError` message, while if I add the `CLOSED shape` constraint to every bibliographic entity,
+it marks as invalid almost every entity that undergoes validation (even if theoretically it 
+shouldn't). I'll continue investigating these issues during the next week.
+
+# Various fixes
+I've also done some fixes and cleanups of the [oc_ocdm][oc_ocdm_github] code. I removed some unused 
+methods and class fields from `ProvEntity` which were remnants of very old code which used to reflect
+an older version of the [OCDM][ocdm-2.0.1] specification. In particular, these methods/class fields 
+were removed:
+  * class fields `iri_prov_agent`, `iri_association`, `iri_curator` and `iri_source_provider`;
+  * `get_types`, `create_creation_activity`, `create_update_activity`, `create_merging_activity` and 
+  `remove_type` (together with class fields `iri_create`, `iri_modify`, `iri_replace` and 
+  `iri_activity`);
+  * `generates` (together with class field `iri_was_generated_by`);
+  * `invalidates` (together with class field `iri_was_invalidated_by`);
+  * `involves_agent_with_role` (together with class field `iri_qualified_association`);
+  * `has_role_type` (together with class field `iri_had_role`);
+  * `has_role_in` (together with class field `iri_associated_agent`).
+
+Then, I fixed line endings for each file in the repository: now the entire repository follows the
+LF convention. The `self.resp` field of `ProvSet` was useless as its role was taken over by `self.resp_agent`, hence it was removed.
+
+Finally, I fixed the implementation of both `add_se` and `_add_prov` methods of `ProvSet`.
+The `_add_prov` method was simply cleaned up from legacy code that allow for a snapshot being 
+associated to multiple entities. This is no longer possible, hence the code was simplified and the
+new method signature accepts a single `prov_subject` parameter instead of the previous 
+`list_of_entities`.
+
+Besides reflecting this signature change into `add_se` too, this method was modified in the same way as it was done for all the `add_*` methods of `GraphSet` during the previous week, enforcing a singleton-like behaviour also for provenance snapshots.
+
+[oc_ocdm_github]:      https://github.com/iosonopersia/oc_ocdm
+[shex_io]:             https://shex.io
+[spacin]:              https://github.com/opencitations/script/tree/master/spacin
+[ocdm-2.0.1]:          https://figshare.com/articles/Metadata_for_the_OpenCitations_Corpus/3443876
+[marilena]:            https://www.unibo.it/sitoweb/marilena.daquino2
+[unibo_it]:            https://www.unibo.it
+[opencitations]:       https://opencitations.net
+[pyshex_github]:       https://github.com/hsolbrig/PyShEx
