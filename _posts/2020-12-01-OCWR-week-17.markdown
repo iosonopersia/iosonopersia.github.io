@@ -30,9 +30,9 @@ Adding the shape constraint also to every entity referenced by the one _on focus
 and without that constraint, adding the `CLOSED` shape constraint results in a lot of valid entities 
 being evaluated as non valid, with hardly understandable error messages.
 
-Anyway, I modified the validation script in order to bypass the lack of `PyShEx` support for 
-QueryMap files. It now loops over all the subjects of the given `rdflib.Graph`, programmatically 
-inferring their type and applying a validation step to each of them separately.
+Anyway, I modified the validation script in order to bypass the lack of [`PyShEx`][pyshex_github] 
+support for QueryMap files. It now loops over all the subjects of the given `rdflib.Graph`, 
+programmatically inferring their type and applying a validation step to each of them separately.
 
 ## Various fixes
 I fixed a type hint in the method signature of `get_entity` from the class `GraphSet`: the returned 
