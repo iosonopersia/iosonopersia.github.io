@@ -1,0 +1,85 @@
+---
+layout: post
+title:  "[OCWR] Week 18 - OpenCitations Weekly Report"
+date:   2020-12-08 10:00:00 +0200
+categories: blog ocwr
+---
+`Week from Nov 30 to Dec 06`
+
+# Introduction
+During the eighteenth week I've done a lot of work both on the [ShEx][shex_io] validator and on the 
+new implementation of `generate_provenance`. I found a way to make the validator work and I fixed 
+some remaining issues of the `generate_provenance` method, which I found out because of the newly 
+added test function. I also continued cleaning the code of the [`oc_ocdm`][oc_ocdm_github] 
+repository and I added some functionality to the `reader.py` module.
+
+# Report
+
+## ShEx validation
+During this week, after some additional experimentations, I found a way to make the validator work 
+well with valid RDF data without losing the possibility of enforcing the shape constraint to entities
+related the one _on focus_. I created two different variants of the ShExC file: one with the
+`CLOSED shape` constraint and one without it. As of now, the second one works beautifully while the 
+first one still produces some errors here and there which seem to be related to the implementation 
+of the [`PyShEx`][pyshex_github] package itself.
+
+Anyway, the idea is the following: during the validation phase of a particular entity, the 
+[ShEx][shex_io] validator should only check that the referenced/referencing entities have the correct
+`rdf:type` property value. This means that their complete shape conformance test is actually 
+postponed to the moment when each of them will become the _on focus_ item and it will be evaluated
+against the shape which corresponds with its `rdf:type` property value. This ensures a quicker 
+evaluation of each entity while, at the same type, it enforces all the shape constraints defined 
+into the ShExC file.
+
+There's only a little caveat: let's say an entity `A` with shape `AShape` references an entity `B` 
+with shape `BShape`. The entity `A` is evaluate before than `B`: the validator checks that `B` 
+contains the expected `rdf:type` property value and it terminates stating that `A` is conformant 
+with the `AShape`. Than, `B` is evaluated against the `BShape` but the validation fails. In this 
+case, if the desidered behaviour is "both entities should fail the test", than the algorithm fails 
+to follow this behaviour. Otherwise, this strategy should work pretty well.
+
+## New generate_provenance implementation
+While I was working on the new `generate_provenance` implementation, I noticed that some of the
+flags associated to the `GraphEntity` objects are almost meaningless since it very difficult (if not 
+impossible) to programmatically know for sure their correct value. Hence, I completely removed the
+`EntityFlags` class and I moved the `was_merged` and `to_be_deleted` flags into the `GraphEntity` 
+class. They, together with `merge_list` are now readonly properties of every `GraphEntity` object.
+
+I refactored the `generate_provenance` implementation in order to make it much more human-readable,
+limiting as much as possible the use of the `continue` keyword.
+
+I added the missing test function for the `generate_provenance` method: it consists in several 
+subtests that represent all the possible situations that could occur. This test function highlighted
+a little bug in the `generate_provenance` implementation that I had to fixed right away (more 
+precisely in the new `_get_merge_description` method).
+
+I added a new `sync_with_triplestore` method to the `GraphSet` class: it loops over all its entities 
+that are marked as to be deleted and it imports from the triplestore all the other entities which 
+refer in some way to the "to be deleted" one. Then, it removes from them every triple referring to 
+the "to be deleted" entity. This method should be called before `generate_provenance` if the user
+wants the triplestore to remain consistent: the modifications done to all of the involved entities 
+will be reflected in the respective provenance snapshots.
+
+Finally, I added a new method `apply_changes` to the `GraphEntity` class, which is intended to be 
+used after the local entity objects are stored back onto the triplestore. It updates the internal 
+properties of the object so to reflect the new persistent state of the entity. In this way, the
+object is now ready again to be modified and a new provenance snapshot can be generated.
+
+
+## Various fixes
+I transformed the `Reader` class into a simple Python module and I added a new method 
+`import_entity_from_triplestore` which makes it really simple for the user to download an entity
+from a triplestore for later usage.
+
+I fixed some import statements of the `prov_set.py` module and I removed the `forced_type` parameter
+of the `GraphSet` and `GraphEntity` constructors since it was now considered useless.
+
+I also changed the name of the following methods of `ProvEntity`:
+  * `get_generation_date` became `get_generation_time`;
+  * `get_invalidation_date` became `get_invalidation_time`.
+
+
+[oc_ocdm_github]:      https://github.com/iosonopersia/oc_ocdm
+[shex_io]:             https://shex.io
+[ocdm-2.0.1]:          https://figshare.com/articles/Metadata_for_the_OpenCitations_Corpus/3443876
+[pyshex_github]:       https://github.com/hsolbrig/PyShEx
