@@ -1,0 +1,75 @@
+---
+layout: post
+title:  "[OCWR] Week 19 - OpenCitations Weekly Report"
+date:   2020-12-16 10:00:00 +0200
+categories: blog ocwr
+---
+`Week from Dec 07 to Dec 13`
+
+# Introduction
+During the nineteenth week I started to work on the new implementation of the `storer.py` module 
+which was included in the [`oc_ocdm`][oc_ocdm_github] package for the first time. The goal is to update its inner
+workings so to reflect the brand new APIs of the [`oc_ocdm`][oc_ocdm_github] package, which were largely extended with 
+respect to those of the original `graphlib.py` module. I also had to apply some fixes here and there
+in order to polish the [`oc_ocdm`][oc_ocdm_github] codebase before the end of the grant.
+
+# Report
+
+# New Storer implementation
+First of all, I started working on the new implementation of the `Storer` class contained inside the 
+`storer.py` module. I included the old `storer.py` module together with its dependency `reporter.py`
+into the [`oc_ocdm`][oc_ocdm_github] package. I cleaned a little bit the code and I added type hints
+for every method. I analyzed the actual implementation to better understand how it works, what should
+be changed and what should be kept as it is now.
+
+# Various fixes
+The method `apply_changes` of `GraphEntity` was refactored and a new method with the same name was
+added to the `GraphSet` class. Regarding entities marked as to be deleted, there's a little 
+difference between calling `apply_changes` on the single entity and on the entire `GraphSet`:
+in the first case, all triples will be removed from the entity (including the mandatory `rdf:type`),
+while in the second case the entity will also be completely removed from the `GraphSet` itself.
+I removed the optional boolean parameter `update_entities` (added last week) from the 
+`generate_provenance` signature because it was a mistake. The method `apply_changes` should only be called after the execution of a "store" or "upload" operation of the `Storer` class.
+
+I fixed the "shexc.txt" and "shexc_closed.txt" files: in both of them I add to complete the list
+of possible values for the property "datacite:usesIdentifierScheme" of the "IdentifierShape".
+
+I removed the `triplestore_url` parameter of the `ProvSet` constructor, also leading to the removal
+of the fields `self.ts` and `self.triplestore_url` which were not used by any part of the codebase
+(because of the new implementation of `generate_provenance` that does not require to execute queries
+on the online triplestore anymore).
+
+Methods `get_types` and `remove_type` of the classes `BibliographicResource`, `Citation`, 
+`DiscourseElement` and `ResourceEmbodiment`, which were are already defined in the `GraphEntity` 
+superclass, were removed from their respective class since they were effectively useless and their
+implementation was older with respect to their corrispectives in the `GraphEntity` class.
+
+I fixed the name of some methods from various entity classes:
+  * **AgentRole:**
+    + from `get_held_by` to `get_is_held_by`
+    + from `remove_held_by` to `remove_is_held_by`
+  * **BibliographicResource:**
+    + from `get_part_of` to `get_is_part_of`
+    + from `remove_part_of` to `remove_is_part_of`
+    + from `get_in_reference_lists` to `get_contained_in_reference_lists`
+    + from `remove_in_reference_list` to `remove_contained_in_reference_list`
+    + from `get_discourse_elements` to `get_contained_discourse_elements`
+    + from `remove_discourse_element` to `remove_contained_discourse_element`
+  * **Citation:**
+    + from `remove_creation_date` to `remove_citation_creation_date`
+    + from `remove_time_span` to `remove_citation_time_span`
+    + from `remove_characterization` to `remove_citation_characterization`
+  * **DiscourseElement:**
+    + from `get_discourse_elements` to `get_contained_discourse_elements`
+    + from `remove_contained_de` to `remove_contained_discourse_element`
+    + from `get_context_of_rp` to `get_is_context_of_rp`
+    + from `remove_context_of_rp` to `remove_is_context_of_rp`
+    + from `get_context_of_pl` to `get_is_context_of_pl`
+    + from `remove_context_of_pl` to `remove_is_context_of_pl`
+  * **ReferencePointer:**
+    + from `remove_be` to `remove_denoted_be`
+  * **BibliographicEntity:**
+    + from `has_id` to `has_identifier`
+    + from `remove_id` to `remove_identifier`
+
+[oc_ocdm_github]:      https://github.com/iosonopersia/oc_ocdm
