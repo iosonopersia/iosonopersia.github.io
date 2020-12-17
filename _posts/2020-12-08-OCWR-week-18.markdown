@@ -64,6 +64,9 @@ Finally, I added a new method `apply_changes` to the `GraphEntity` class, which 
 used after the local entity objects are stored back onto the triplestore. It updates the internal 
 properties of the object so to reflect the new persistent state of the entity. In this way, the
 object is now ready again to be modified and a new provenance snapshot can be generated.
+I added also an optional boolean parameter to the `generate_provenance` method of `ProvSet` 
+(`update_entities`) which, if `True`, forces the method to call `apply_changes` on all the entities
+for which provenance was generated.
 
 
 ## Various fixes
