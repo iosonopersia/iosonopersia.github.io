@@ -70,4 +70,4 @@ It's set as `True` if at least one "merge" operation is performed on the conside
 of other entities with which these operations were done (a field which is currently missing) should be kept inside the `GraphEntity` 
 instance.
 
-[oc_ocdm_github]:      https://github.com/iosonopersia/oc_ocdm
+[oc_ocdm_github]:      https://github.com/opencitations/oc_ocdm

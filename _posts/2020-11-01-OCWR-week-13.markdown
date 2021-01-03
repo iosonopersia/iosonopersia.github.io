@@ -73,5 +73,5 @@ A new "import_from_graph" function is now able to enrich a `GraphSet` instance w
 for now, the graph must be provided by the user and the data it contains can come from whatever source. In future, we should consider 
 writing support functions which could help the user retrieving entities directly from online triplestores, RDF text files, etc. ...
 
-[oc_ocdm_github]:      https://github.com/iosonopersia/oc_ocdm
+[oc_ocdm_github]:      https://github.com/opencitations/oc_ocdm
 [ocdm-2.0.1]:          https://figshare.com/articles/Metadata_for_the_OpenCitations_Corpus/3443876

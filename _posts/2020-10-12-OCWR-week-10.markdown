@@ -30,4 +30,4 @@ I then fixed a bug in the constructor of `GraphEntity` that caused the URIs of e
 ## New functionalities
 A new `remove_entity` method was added to the `GraphEntity`class. This method makes it possible to remove in a single step every triple contained by a `GraphEntity` instance. Furthermore, thanks to some new methods of the `GraphSet` class, it is now possible to extract a tuple containing all the entities of the same type which are contained inside the `GraphSet`. For example, it’s now possible to get all the `ReferenceAnnotation` instances in a `GraphSet` just by calling the method `get_an`.
 
-[oc_ocdm_github]:      https://github.com/iosonopersia/oc_ocdm
+[oc_ocdm_github]:      https://github.com/opencitations/oc_ocdm

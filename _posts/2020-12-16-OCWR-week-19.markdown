@@ -72,4 +72,4 @@ I fixed the name of some methods from various entity classes:
     + from `has_id` to `has_identifier`
     + from `remove_id` to `remove_identifier`
 
-[oc_ocdm_github]:      https://github.com/iosonopersia/oc_ocdm
+[oc_ocdm_github]:      https://github.com/opencitations/oc_ocdm

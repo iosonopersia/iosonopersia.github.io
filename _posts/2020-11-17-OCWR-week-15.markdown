@@ -40,7 +40,7 @@ made all the modifications required to adapt the [SPACIN][spacin] and [BEE][bee]
 [oc_ocdm][oc_ocdm_github] package (v3.0.0). Everything worked fine out of the box, even if I found (and fixed) a little bug related to 
 the encoding of files persisted by `scripts/script/bee/refstorer.py` and `scripts/script/ocdm/storer.py`.
 
-[oc_ocdm_github]:      https://github.com/iosonopersia/oc_ocdm
+[oc_ocdm_github]:      https://github.com/opencitations/oc_ocdm
 [shex_io]:             https://shex.io
 [ccc]:                 https://github.com/opencitations/ccc
 [ccc_branch]:          https://github.com/iosonopersia/ccc/tree/replace_graphlib_with_oc_ocdm

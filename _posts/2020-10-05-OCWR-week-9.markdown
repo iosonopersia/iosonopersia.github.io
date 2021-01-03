@@ -76,5 +76,5 @@ from oc_ocdm import GraphSet
 from oc_ocdm.entities.bibliographic import BibliographicResource
 ```
 
-[oc_ocdm_github]:      https://github.com/iosonopersia/oc_ocdm
+[oc_ocdm_github]:      https://github.com/opencitations/oc_ocdm
 [oci]:                 https://figshare.com/articles/Open_Citation_Identifier_Definition/7127816

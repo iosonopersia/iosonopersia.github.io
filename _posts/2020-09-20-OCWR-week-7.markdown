@@ -51,6 +51,6 @@ Splitting the file into smaller chunks could be an option, but this would compli
 At the end of the week, I can say not to have found any practical solution to this problem other than to stop using the [OCI][oci] to identify
 citations in favour of a simple sequential number as in the case of every other entity stored in the corpus.
 
-[oc_ocdm_github]:      https://github.com/iosonopersia/oc_ocdm
+[oc_ocdm_github]:      https://github.com/opencitations/oc_ocdm
 [ocdm-2.0.1]:          https://figshare.com/articles/Metadata_for_the_OpenCitations_Corpus/3443876
 [oci]:                 https://figshare.com/articles/Open_Citation_Identifier_Definition/7127816

@@ -50,4 +50,4 @@ down. This was needed in order to be able to publish meaningful releases:
 
 Other changes will be included in a future release.
 
-[oc_ocdm_github]:      https://github.com/iosonopersia/oc_ocdm
+[oc_ocdm_github]:      https://github.com/opencitations/oc_ocdm

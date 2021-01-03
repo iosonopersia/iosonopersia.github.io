@@ -31,4 +31,4 @@ lastly written line.
 The new algorithm has been tested and it turned out to be pretty fast: the `generate_provenance` method now only takes consistently around 1 to 
 1.5 seconds to execute with small test data. It will be committed to the [online GitHub repository][oc_ocdm_github] as soon as possible.
 
-[oc_ocdm_github]:      https://github.com/iosonopersia/oc_ocdm
+[oc_ocdm_github]:      https://github.com/opencitations/oc_ocdm
