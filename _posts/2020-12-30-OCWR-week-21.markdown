@@ -1,0 +1,88 @@
+---
+layout: post
+title:  "[OCWR] Week 21 - OpenCitations Weekly Report"
+date:   2020-12-30 10:00:00 +0200
+categories: blog ocwr
+---
+`Week from Dec 21 to Dec 27`
+
+# Introduction
+During the twentyfirst (and last) week I've done a lot of work because I had to finalize the work done on the
+[oc_ocdm][oc_ocdm_github] package. Various fixes were made to the `Storer` class, the `CounterHandler` class with
+its subclasses and also the `GraphEntity`, `GraphSet`, `ProvEntity` and `ProvSet` classes. Anyway, most of
+the work was done on a big code refactoring which changed a lot of the internal structure of the package and that
+made easier to integrate the new `MetadataSet` and `MetadataEntity`.
+
+# Report
+
+# Various fixes for the Storer class
+The `set_preface_query` and `get_preface_query` methods from `Storer` were removed: they were only needed for the old
+`dataset_handler.py` module and are not needed anymore since that module was replaced by the new metadata entities added
+this week to the codebase (see below).
+
+The method `update_all` was fixed in order for it to take into account also cases when the sparql update query related
+to a particular entity is an empty string (no triples to add and/or remove).
+
+For backward compatibility, since some external modules only use the `_load` method, the `Storer` constructor signature
+was fixed to allow instantiating a `Storer` object without specifying a set of entities. Moreover, a little bug in the
+`store` methods was fixed. The function `addN` of the `rdflib` package was used in a wrong way, passing only one quad
+instead that a collection of quads.
+
+# Code refactoring
+A big code refactoring was applied to the entire package. Code was mainly split into three different folders: `graph` (for
+entities which represent the actual data), `prov` (for entities which describe history snapshots of the `graph` entities)
+and `metadata` (for entities that describe datasets and distributions, with code taken from the old `datasethandler.py` module
+and docstrings taken from the [OCDM specification][ocdm-2.0.1]).
+
+`GraphEntity`, `ProvEntity` and `MetadataEntity` are now subclasses of `AbstractEntity`, while `GraphSet`, `ProvSet` and 
+`MetadataSet` are now subclasses of `AbstractSet`. `ProvEntity` is nomore a subclass of `GraphEntity` and `ProvSet` is nomore
+a subclass of `GraphSet`. Test files were prepared for most of the new classes.
+
+The `Storer` was consequently updated so that it now accepts a generical `AbstractSet`: it's now able to store every type of
+entity, treating each type in the appropriate way.
+
+# New CounterHandler methods
+The `CounterHandler` interface was extended with 4 new methods: `read_metadata_counter`, `increment_metadata_counter`,
+`set_counter` and `set_metadata_counter`. The first ones were added because the new `MetadataSet` class required a different
+strategy for managing the entity counters. The last two ones were needed in order to support a new behaviour of the
+`GraphSet`, `ProvSet` and `MetadataSet` classes: if a new entity which is added to them has a `res` value with a count
+value greater than the one which is stored inside the `CounterHandler`, than the counter inside the `CounterHandler`
+gets updated with this new value.
+
+# Other changes
+A lot of methods from `ProvEntity` were moved into a new `EntitySnapshot` class in which some of the methods had their
+name changed:
+  * `get_snapshot_of` became `get_is_snapshot_of`;
+  * `snapshot_of` became `is_snapshot_of`;
+  * `remove_snapshot_of` became `remove_is_snapshot_of`.
+
+Missing type hints were added to the `support.py` module and the constructor signatures of `GraphEntity`, `GraphSet`, `ProvEntity`, 
+`ProvSet`, `MetadataEntity` and `MetadataSet` were changed. New signatures are the following:
+``` python
+GraphEntity(g: Graph, g_set: GraphSet, res: URIRef = None, res_type: URIRef = None,
+            resp_agent: str = None, source_agent: str = None, source: str = None,
+            count: str = None, label: str = None, short_name: str = "",
+            preexisting_graph: Graph = None)
+GraphSet(base_iri: str, info_dir: str = "", supplier_prefix: str = "",
+         wanted_label: bool = True))
+
+ProvEntity(prov_subject: GraphEntity, g: Graph, p_set: ProvSet,
+           res: URIRef = None, resp_agent: str = None, source_agent: str = None,
+           source: str = None, res_type: URIRef = None, count: str = None,
+           label: str = None, short_name: str = "")
+ProvSet(prov_subj_graph_set: GraphSet, base_iri: str, info_dir: str = "",
+        supplier_prefix: str = "", wanted_label: bool = True)
+
+MetadataEntity(g: Graph, base_iri: str, dataset_name: str, m_set: MetadataSet,
+               res: URIRef = None, res_type: URIRef = None, resp_agent: str = None,
+               source_agent: str = None, source: str = None, count: str = None,
+               label: str = None, short_name: str = "", preexisting_graph: Graph = None)
+MetadataSet(base_iri: str, info_dir: str = "", wanted_label: bool = True)
+```
+
+Please note that the user shouldn't pass a `CounterHandler` instance to the "Set" constructors anymore: a `CounterHandler`
+of the right subclass is automatically instantiated based of the fact that the `info_dir` parameter is an None value or
+a non-empty string.
+
+[oc_ocdm_github]:      https://github.com/opencitations/oc_ocdm
+[ocdm-2.0.1]:          https://figshare.com/articles/Metadata_for_the_OpenCitations_Corpus/3443876
