@@ -1,0 +1,44 @@
+---
+layout: post
+title:  "[OCWR] Week 20 - OpenCitations Weekly Report"
+date:   2020-12-23 10:00:00 +0200
+categories: blog ocwr
+---
+`Week from Dec 14 to Dec 20`
+
+# Introduction
+During the twentieth week I finished working on the new implementation of the `Storer` class.
+The [online repository][oc_ocdm_github] was moved to the address "https://github.com/opencitations/oc_ocdm",
+since this will be its new official location on the web. Other little changes to the codebase are documented below. 
+
+# Report
+
+# New Storer implementation
+The new Storer implementation is now ready to be used by [oc_ocdm][oc_ocdm_github] users. It doesn't work anymore
+on a per-graph basis, as it now reasons upon `GraphEntity` instances. This means that now the `Storer` can correctly
+handle all the situations that may occur while working with [OCDM][ocdm-2.0.1]-compliant data: an entity can be created
+out of nothing, it can be removed or it can be updated (in overwrite or append mode), while before it could only be
+created or updated in append mode.
+
+The entities can be stored singularly or as a result of a `Storer` operation applied to an entire `GraphSet`.
+In the case of entities which have to be updated, the modality of this operation (overwrite/append) is choosen
+based of the presence of a non-empty preexisting graph inside the entity. This means that:
+  * if the user wants to update an existing entity by adding/subtracting triples from it, then he/she is required
+  to import the actual graph of that same entity and to pass it as an argument for the correct `add_*` method of `GraphSet`;
+  * if the user simply wants to add new triples to an entity (which can also be non existent), then he/she must
+  call the correct `add_*` method of `GraphSet` without passing the preexistent graph as an input (even if he/she already
+  possesses that `rdflib.Graph` instance).
+
+The methods `get_delete_query`, `get_insert_query` and `get_update_query` of the `ProvSet` class were moved into a
+new `query_utils.py` module because they are needed also by the new `Storer` implementation.
+
+# Various changes
+I added the `LICENSE.md` file to the project: the license choosen for this [OpenCitations][opencitations] project
+is the `ISC license`. The `pyproject.toml` file was modified with updated metadata regarding the project.
+
+In `GraphEntity` and `GraphSet`, the method `apply_changes` was renamed to `commit_changes`, since this new name
+better conveys its semantics (it should be called at the end of all the edits made on an entity so that new changes
+can be made, which is very similar to the "commit" operation of transactional languages such as SQL).
+
+[opencitations]:       https://opencitations.net
+[oc_ocdm_github]:      https://github.com/opencitations/oc_ocdm
