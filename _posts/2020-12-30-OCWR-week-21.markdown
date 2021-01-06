@@ -84,5 +84,13 @@ Please note that the user shouldn't pass a `CounterHandler` instance to the "Set
 of the right subclass is automatically instantiated based of the fact that the `info_dir` parameter is an None value or
 a non-empty string.
 
+The ShEx files were updated with the `DatasetShape` and the `DistributionShape`.
+
+All import statements pointing to internal modules were changed: they now consist in
+full absolute paths so that circular dependencies are less probable. Importing only
+the needed modules, code execution should also be a little faster.
+
+The `clean_info_dir` script was removed because it turned out to be useless.
+
 [oc_ocdm_github]:      https://github.com/opencitations/oc_ocdm
 [ocdm-2.0.1]:          https://figshare.com/articles/Metadata_for_the_OpenCitations_Corpus/3443876
