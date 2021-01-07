@@ -9,7 +9,8 @@ categories: blog ocwr
 # Introduction
 During the twentyfirst (and last) week I've done a lot of work because I had to finalize the work done on the
 [oc_ocdm][oc_ocdm_github] package. Various fixes were made to the `Storer` class, the `CounterHandler` class with
-its subclasses and also the `GraphEntity`, `GraphSet`, `ProvEntity` and `ProvSet` classes. Anyway, most of
+its subclasses and also the `GraphEntity`, `GraphSet`, `ProvEntity` and `ProvSet` classes. The new `Reader` class
+was created, adding to it the `load` method previously owned by `Storer`. Anyway, most of
 the work was done on a big code refactoring which changed a lot of the internal structure of the package and that
 made easier to integrate the new `MetadataSet` and `MetadataEntity`.
 
@@ -23,8 +24,9 @@ this week to the codebase (see below).
 The method `update_all` was fixed in order for it to take into account also cases when the sparql update query related
 to a particular entity is an empty string (no triples to add and/or remove).
 
-For backward compatibility, since some external modules only use the `_load` method, the `Storer` constructor signature
-was fixed to allow instantiating a `Storer` object without specifying a set of entities. Moreover, a little bug in the
+The `load` method of the `Storer` class was moved to the newly created `Reader` class. An old "hack" contained in the `load`
+method was removed since it wasn't needed anymore: it was put in place in order to overcome a bug contained by older versions of 
+`rdflib`, which wasn't able to parse/load an RDF file if its path happened to contain spaces. Moreover, a little bug in the
 `store` methods was fixed. The function `addN` of the `rdflib` package was used in a wrong way, passing only one quad
 instead that a collection of quads.
 
