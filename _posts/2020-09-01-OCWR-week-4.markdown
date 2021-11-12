@@ -64,6 +64,6 @@ to
 [ccc]:                 https://github.com/opencitations/ccc
 [spacin]:              https://github.com/opencitations/script/tree/master/spacin
 [bee]:                 https://github.com/opencitations/script/tree/master/bee
-[self_g_prov_commit]:  https://github.com/iosonopersia/oc_ocdm/commit/425f8e3ad9b9073e1d8d9ae7e6a1651aaa4df552
+[self_g_prov_commit]:  https://github.com/opencitations/oc_ocdm/commit/425f8e3ad9b9073e1d8d9ae7e6a1651aaa4df552
 [jats2oc_1666]:        https://github.com/opencitations/ccc/blob/94820fc31eb2529eae127166b3f1c8316283529e/scripts/script/ccc/jats2oc.py#L1666
 [jats2oc_1568]:        https://github.com/opencitations/ccc/blob/94820fc31eb2529eae127166b3f1c8316283529e/scripts/script/ccc/jats2oc.py#L1568
